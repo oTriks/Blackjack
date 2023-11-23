@@ -9,12 +9,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val playButton = findViewById<ImageButton>(R.id.playImageButton)
+        val highscoreButton = findViewById<ImageButton>(R.id.highscoreImageButton)
         playButton.setOnClickListener {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.constraintlayout, GameFragment())
             transaction.commit()
         }
-
+        highscoreButton.setOnClickListener {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.constraintlayout, GameFragment())
+            transaction.commit()
+        }
 
     }
 }
