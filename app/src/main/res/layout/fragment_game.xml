@@ -101,7 +101,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginStart="144dp"
-         android:layout_marginBottom="40dp"
+         android:layout_marginBottom="104dp"
          android:scaleX="0.3"
          android:scaleY="0.3"
          android:src="@drawable/sign_deal"
@@ -188,13 +188,13 @@
          android:scaleX="0.45"
          android:scaleY="0.45"
          android:src="@drawable/card_blank"
-         app:layout_constraintEnd_toStartOf="@+id/card2BlankPlayerImageView2"
+         app:layout_constraintEnd_toStartOf="@+id/card2BlankPlayerImageView"
          app:layout_constraintHorizontal_bias="0.0"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/cardBlankDealerImageView" />
 
      <ImageView
-         android:id="@+id/card2BlankPlayerImageView2"
+         android:id="@+id/card2BlankPlayerImageView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginTop="80dp"
@@ -378,5 +378,16 @@
          app:layout_constraintBottom_toTopOf="@+id/splitImageButton"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
+
+     <TextView
+         android:id="@+id/totalBetTextView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginBottom="70dp"
+         android:text="TextView"
+         android:textSize="24sp"
+         app:layout_constraintBottom_toBottomOf="@+id/card2BlankPlayerImageView"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
