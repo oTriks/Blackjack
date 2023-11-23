@@ -20,6 +20,9 @@ class GameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_game, container, false)
+//        val views = mapOf(
+//            "marker5" to view.findViewById<ImageView>(R.id.marker5ImageView)
+//        )
 
         val marker5 = view.findViewById<ImageView>(R.id.marker5ImageView)
         val marker10 = view.findViewById<ImageView>(R.id.marker10ImageView)
@@ -47,7 +50,7 @@ class GameFragment : Fragment() {
         val bannerBlackjack = view.findViewById<ImageView>(R.id.bannerBlackjackImageView)
         cardBlankDealer.visibility = View.INVISIBLE
         cardDarkDealer.visibility = View.INVISIBLE
-        card1BlankPlayer.visibility = View.INVISIBLE
+        card1BlankPlayer.visibility = View.VISIBLE
         card2BlankPlayer.visibility = View.INVISIBLE
         madeBetMarker5.visibility = View.INVISIBLE
         madeBetMarker10.visibility = View.INVISIBLE
@@ -64,6 +67,7 @@ class GameFragment : Fragment() {
         bannerLose.visibility = View.INVISIBLE
         bannerBust.visibility = View.INVISIBLE
         bannerBlackjack.visibility = View.INVISIBLE
+
 
         var totalBet = 0
         var totalBetText = view.findViewById<TextView>(R.id.totalBetTextView)
@@ -83,41 +87,24 @@ class GameFragment : Fragment() {
         setupMarker(marker50, madeBetMarker50, 50, totalBetText, deal)
         setupMarker(marker100, madeBetMarker100, 100, totalBetText, deal)
 
-
-//        marker5.setOnClickListener {
-//            madeBetMarker5.visibility = View.VISIBLE
-//            totalBet += 5
-//            totalBetText.text = totalBet.toString()
-//
-//        }
-//        marker10.setOnClickListener {
-//            madeBetMarker10.visibility = View.VISIBLE
-//            totalBet += 10
-//            totalBetText.text = totalBet.toString()
-//        }
-//        marker25.setOnClickListener {
-//            madeBetMarker25.visibility = View.VISIBLE
-//            totalBet += 25
-//            totalBetText.text = totalBet.toString()
-//        }
-//        marker50.setOnClickListener {
-//            madeBetMarker50.visibility = View.VISIBLE
-//            totalBet += 50
-//            totalBetText.text = totalBet.toString()
-//        }
-//        marker100.setOnClickListener {
-//            madeBetMarker100.visibility = View.VISIBLE
-//            totalBet += 100
-//            totalBetText.text = totalBet.toString()
-//        }
-
-
-
-
-
-
+        deal.setOnClickListener {
+            val deck = Deck()
+            val hand = Hand()
+            deck.dealHand(hand.cards)
+            val points = hand.calculatePoints(hand.cards)
+            val cardDisplay = CardDisplay()
+            if (hand.cards.isNotEmpty()) {
+                val image = cardDisplay.getCardImage(hand.cards[0])
+            }
+            if (deck.cards.isNotEmpty()) {
+                val card = deck.cards.removeAt(deck.cards.lastIndex)
+                hand.add(card)
+            }
+            val hand = mutableListOf<Card>()
+            val card = Card.Card(Card.Suit.HEARTS, Card.Rank.TWO)
+            val image = cardDisplay.getCardImage(card)
+            card1BlankPlayer.setImageResource(image)
+        }
         return view
     }
-
-
 }
