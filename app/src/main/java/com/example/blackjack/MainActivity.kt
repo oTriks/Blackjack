@@ -2,15 +2,19 @@ package com.example.blackjack
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val playButton = findViewById<ImageButton>(R.id.playImageButton)
+        playButton.setOnClickListener {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.constraintlayout, GameFragment())
+            transaction.commit()
+        }
 
 
     }
-
-
 }
