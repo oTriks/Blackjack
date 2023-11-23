@@ -2,32 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".MainActivity">
 
-
-
-
-
-
-
-
-    >
 
     <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="449dp"
-        android:layout_height="1002dp"
+        android:id="@+id/gameBoard"
+        android:layout_width="424dp"
+        android:layout_height="981dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.369"
-        app:srcCompat="@drawable/test2" />
+        app:srcCompat="@drawable/gameboard" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/playImageButton"
         android:layout_width="395dp"
         android:layout_height="142dp"
         android:layout_marginTop="7dp"
@@ -37,16 +30,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.6"
-        app:srcCompat="@drawable/play" />
+        app:srcCompat="@drawable/sign_play" />
 
     <ImageButton
-        android:id="@+id/imageButton8"
+        android:id="@+id/highscoreImageButton"
         android:layout_width="330dp"
         android:layout_height="91dp"
         android:layout_marginBottom="172dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/highscore" />
+        app:srcCompat="@drawable/sign_highscore" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
