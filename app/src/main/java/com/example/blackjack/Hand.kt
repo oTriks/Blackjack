@@ -2,12 +2,12 @@ package com.example.blackjack
 
 class Hand {
     var cards: MutableList<Card.Card> = mutableListOf()
-    fun calculatePoints(hand: List<Card.Card>): Int {
-        var points = 0
+    fun calculatePoints(hand: List<Card.Card>): Pair<Int, Int>{
+        var pointsWithAceAsOne   = 0
         var aces = 0
 
         for (card in hand) {
-            points += when (card.rank) {
+            pointsWithAceAsOne  += when (card.rank) {
                 Card.Rank.TWO -> 2
                 Card.Rank.THREE -> 3
                 Card.Rank.FOUR -> 4
@@ -19,14 +19,12 @@ class Hand {
                 Card.Rank.TEN, Card.Rank.JACK, Card.Rank.QUEEN, Card.Rank.KING -> 10
                 Card.Rank.ACE -> {
                     aces++
-                    11
+                    1
                 }
             }
         }
-        while (points > 21 && aces > 0) {
-            points -= 10
-            aces--
-        }
-        return points
+        val pointsWithAceAsEleven = pointsWithAceAsOne + aces * 10
+
+        return Pair(pointsWithAceAsOne, pointsWithAceAsEleven)
     }
 }
