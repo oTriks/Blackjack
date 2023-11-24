@@ -17,7 +17,7 @@ class HighscoreFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view =
+
         return inflater.inflate(R.layout.fragment_highscore, container, false)
 
 

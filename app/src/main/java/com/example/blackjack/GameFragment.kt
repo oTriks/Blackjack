@@ -1,6 +1,7 @@
 package com.example.blackjack
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,9 +21,6 @@ class GameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_game, container, false)
-//        val views = mapOf(
-//            "marker5" to view.findViewById<ImageView>(R.id.marker5ImageView)
-//        )
 
         val marker5 = view.findViewById<ImageView>(R.id.marker5ImageView)
         val marker10 = view.findViewById<ImageView>(R.id.marker10ImageView)
@@ -33,6 +31,9 @@ class GameFragment : Fragment() {
         val cardDarkDealer = view.findViewById<ImageView>(R.id.cardDarkDealerImageView)
         val card1BlankPlayer = view.findViewById<ImageView>(R.id.card1BlankPlayerImageView)
         val card2BlankPlayer = view.findViewById<ImageView>(R.id.card2BlankPlayerImageView)
+        val card3BlankPlayer = view.findViewById<ImageView>(R.id.card3BlankPlayerImageView)
+        val card4BlankPlayer = view.findViewById<ImageView>(R.id.card4BlankPlayerImageView)
+        val card5BlankPlayer = view.findViewById<ImageView>(R.id.card5BlankPlayerImageView)
         val madeBetMarker5 = view.findViewById<ImageView>(R.id.madeBetMarker5ImageView)
         val madeBetMarker10 = view.findViewById<ImageView>(R.id.madeBetMarker10ImageView)
         val madeBetMarker25 = view.findViewById<ImageView>(R.id.madeBetMarker25ImageView)
@@ -49,9 +50,12 @@ class GameFragment : Fragment() {
         val bannerBust = view.findViewById<ImageView>(R.id.bannerBustImageView)
         val bannerBlackjack = view.findViewById<ImageView>(R.id.bannerBlackjackImageView)
         cardBlankDealer.visibility = View.INVISIBLE
-        cardDarkDealer.visibility = View.INVISIBLE
-        card1BlankPlayer.visibility = View.VISIBLE
+        cardDarkDealer.visibility = View.VISIBLE
+        card1BlankPlayer.visibility = View.INVISIBLE
         card2BlankPlayer.visibility = View.INVISIBLE
+        card3BlankPlayer.visibility = View.VISIBLE
+        card4BlankPlayer.visibility = View.VISIBLE
+        card5BlankPlayer.visibility = View.VISIBLE
         madeBetMarker5.visibility = View.INVISIBLE
         madeBetMarker10.visibility = View.INVISIBLE
         madeBetMarker25.visibility = View.INVISIBLE
@@ -71,6 +75,7 @@ class GameFragment : Fragment() {
 
         var totalBet = 0
         var totalBetText = view.findViewById<TextView>(R.id.totalBetTextView)
+        var pointsText = view.findViewById<TextView>(R.id.pointsTextView)
 
         fun setupMarker(marker: ImageView, madeBetMarker: ImageView, value: Int, totalBetText: TextView, dealButton: ImageButton){
             marker.setOnClickListener {
@@ -80,6 +85,9 @@ class GameFragment : Fragment() {
                 deal.visibility = View.VISIBLE
             }
         }
+        val cardImageViews = listOf(card1BlankPlayer, card2BlankPlayer, card3BlankPlayer, card4BlankPlayer, card5BlankPlayer)
+        // behöver lägga till felhantering för många kort
+
 
         setupMarker(marker5, madeBetMarker5, 5, totalBetText, deal)
         setupMarker(marker10, madeBetMarker10, 10, totalBetText, deal)
@@ -93,17 +101,33 @@ class GameFragment : Fragment() {
             deck.dealHand(hand.cards)
             val points = hand.calculatePoints(hand.cards)
             val cardDisplay = CardDisplay()
-            if (hand.cards.isNotEmpty()) {
-                val image = cardDisplay.getCardImage(hand.cards[0])
+            hand.cards.forEachIndexed { i, card ->
+                val image = cardDisplay.getCardImage(card)
+                cardImageViews[i].setImageResource(image)
+                Log.d("Blackjack", "Displaying card $card at index $i")
             }
-            if (deck.cards.isNotEmpty()) {
-                val card = deck.cards.removeAt(deck.cards.lastIndex)
-                hand.add(card)
+            deal.visibility = View.INVISIBLE
+            card1BlankPlayer.visibility = View.VISIBLE
+            card2BlankPlayer.visibility = View.VISIBLE
+            hit.visibility = View.VISIBLE
+            stand.visibility = View.VISIBLE
+            doubleDown.visibility = View.VISIBLE
+            pointsText.text = points.toString()
+
+            hit.setOnClickListener {
+                val card = deck.cards.random()
+                deck.cards.remove(card)
+                hand.cards.add(card)
+                val image = cardDisplay.getCardImage(card)
+                cardImageViews[hand.cards.size - 1].setImageResource(image)
+                val points = hand.calculatePoints(hand.cards)
+                pointsText.text = points.toString()
+//                if (image = card3BlankPlayer) {
+//                    card3BlankPlayer.visibility = View.VISIBLE }
+
             }
-            val hand = mutableListOf<Card>()
-            val card = Card.Card(Card.Suit.HEARTS, Card.Rank.TWO)
-            val image = cardDisplay.getCardImage(card)
-            card1BlankPlayer.setImageResource(image)
+
+
         }
         return view
     }
