@@ -53,9 +53,9 @@ class GameFragment : Fragment() {
         cardDarkDealer.visibility = View.VISIBLE
         card1BlankPlayer.visibility = View.INVISIBLE
         card2BlankPlayer.visibility = View.INVISIBLE
-        card3BlankPlayer.visibility = View.VISIBLE
-        card4BlankPlayer.visibility = View.VISIBLE
-        card5BlankPlayer.visibility = View.VISIBLE
+        card3BlankPlayer.visibility = View.INVISIBLE
+        card4BlankPlayer.visibility = View.INVISIBLE
+        card5BlankPlayer.visibility = View.INVISIBLE
         madeBetMarker5.visibility = View.INVISIBLE
         madeBetMarker10.visibility = View.INVISIBLE
         madeBetMarker25.visibility = View.INVISIBLE
@@ -76,6 +76,7 @@ class GameFragment : Fragment() {
         var totalBet = 0
         var totalBetText = view.findViewById<TextView>(R.id.totalBetTextView)
         var pointsText = view.findViewById<TextView>(R.id.pointsTextView)
+
 
         fun setupMarker(marker: ImageView, madeBetMarker: ImageView, value: Int, totalBetText: TextView, dealButton: ImageButton){
             marker.setOnClickListener {
@@ -99,7 +100,7 @@ class GameFragment : Fragment() {
             val deck = Deck()
             val hand = Hand()
             deck.dealHand(hand.cards)
-            val points = hand.calculatePoints(hand.cards)
+            val (pointsWithAceAsOne, pointsWithAceAsEleven) = hand.calculatePoints(hand.cards)
             val cardDisplay = CardDisplay()
             hand.cards.forEachIndexed { i, card ->
                 val image = cardDisplay.getCardImage(card)
@@ -112,18 +113,34 @@ class GameFragment : Fragment() {
             hit.visibility = View.VISIBLE
             stand.visibility = View.VISIBLE
             doubleDown.visibility = View.VISIBLE
-            pointsText.text = points.toString()
 
+            if (pointsWithAceAsOne == pointsWithAceAsEleven || pointsWithAceAsEleven > 21) {
+                pointsText.text = pointsWithAceAsOne.toString()
+            } else {
+                pointsText.text = "$pointsWithAceAsOne/$pointsWithAceAsEleven"
+            }
+
+
+//            pointsText.text = points.toString()
+
+            var currentCardIndex = 2
             hit.setOnClickListener {
                 val card = deck.cards.random()
                 deck.cards.remove(card)
                 hand.cards.add(card)
                 val image = cardDisplay.getCardImage(card)
-                cardImageViews[hand.cards.size - 1].setImageResource(image)
-                val points = hand.calculatePoints(hand.cards)
-                pointsText.text = points.toString()
-//                if (image = card3BlankPlayer) {
-//                    card3BlankPlayer.visibility = View.VISIBLE }
+
+                cardImageViews[currentCardIndex].setImageResource(image)
+                cardImageViews[currentCardIndex].visibility = View.VISIBLE
+                currentCardIndex++
+
+                val (pointsWithAceAsOne, pointsWithAceAsEleven) = hand.calculatePoints(hand.cards)
+                if (pointsWithAceAsOne == pointsWithAceAsEleven || pointsWithAceAsEleven > 21) {
+                    pointsText.text = pointsWithAceAsOne.toString()
+                } else {
+                    pointsText.text = "$pointsWithAceAsOne/$pointsWithAceAsEleven"
+                }
+
 
             }
 
