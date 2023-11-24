@@ -183,7 +183,7 @@
          android:id="@+id/card1BlankPlayerImageView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginStart="45dp"
+         android:layout_marginStart="20dp"
          android:layout_marginTop="80dp"
          android:scaleX="0.45"
          android:scaleY="0.45"
@@ -198,7 +198,43 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginTop="80dp"
-         android:layout_marginEnd="45dp"
+         android:layout_marginEnd="80dp"
+         android:scaleX="0.45"
+         android:scaleY="0.45"
+         android:src="@drawable/card_blank"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
+
+     <ImageView
+         android:id="@+id/card3BlankPlayerImageView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="80dp"
+         android:layout_marginEnd="55dp"
+         android:scaleX="0.45"
+         android:scaleY="0.45"
+         android:src="@drawable/card_blank"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
+
+     <ImageView
+         android:id="@+id/card4BlankPlayerImageView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="80dp"
+         android:layout_marginEnd="40dp"
+         android:scaleX="0.45"
+         android:scaleY="0.45"
+         android:src="@drawable/card_blank"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
+
+     <ImageView
+         android:id="@+id/card5BlankPlayerImageView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="80dp"
+         android:layout_marginEnd="25dp"
          android:scaleX="0.45"
          android:scaleY="0.45"
          android:src="@drawable/card_blank"
@@ -389,5 +425,16 @@
          app:layout_constraintBottom_toBottomOf="@+id/card2BlankPlayerImageView"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="parent" />
+
+     <TextView
+         android:id="@+id/pointsTextView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="50dp"
+         android:layout_marginBottom="60dp"
+         android:text="TextView"
+         android:textSize="34sp"
+         app:layout_constraintBottom_toBottomOf="@+id/valueCardsPlayerEditTextNumber"
+         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
