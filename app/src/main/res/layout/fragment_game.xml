@@ -9,11 +9,10 @@
 
      <ImageView
          android:id="@+id/backgroundImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="29dp"
-         android:layout_marginBottom="27dp"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
          android:src="@drawable/gameboard"
+         android:scaleType="fitXY"
          app:layout_constraintBottom_toBottomOf="parent"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.0"
@@ -202,43 +201,24 @@
          android:scaleX="0.45"
          android:scaleY="0.45"
          android:src="@drawable/card_blank"
+         app:layout_constraintStart_toStartOf="parent"
+
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
 
      <ImageView
-         android:id="@+id/card3BlankPlayerImageView"
+         android:id="@+id/cardNextCardImageView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginTop="80dp"
-         android:layout_marginEnd="55dp"
+         android:layout_marginTop="70dp"
+         android:layout_marginEnd="170dp"
          android:scaleX="0.45"
          android:scaleY="0.45"
          android:src="@drawable/card_blank"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
 
-     <ImageView
-         android:id="@+id/card4BlankPlayerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="80dp"
-         android:layout_marginEnd="40dp"
-         android:scaleX="0.45"
-         android:scaleY="0.45"
-         android:src="@drawable/card_blank"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
-
-     <ImageView
-         android:id="@+id/card5BlankPlayerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="80dp"
-         android:layout_marginEnd="25dp"
-         android:scaleX="0.45"
-         android:scaleY="0.45"
-         android:src="@drawable/card_blank"
-         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="1.0"
+         app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
 
      <ImageView
@@ -317,65 +297,6 @@
          app:layout_constraintStart_toStartOf="parent" />
 
      <ImageView
-         android:id="@+id/valueCardsPlayerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="64dp"
-         android:scaleX="0.29"
-         android:scaleY="0.29"
-         android:src="@drawable/value_cards"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.886"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
-
-     <ImageView
-         android:id="@+id/valueCardsDealerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginBottom="88dp"
-         android:scaleX="0.29"
-         android:scaleY="0.29"
-         android:src="@drawable/value_cards"
-         app:layout_constraintBottom_toTopOf="@+id/card1BlankPlayerImageView"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.182"
-         app:layout_constraintStart_toStartOf="parent" />
-
-     <EditText
-         android:id="@+id/valueCardsPlayerEditTextNumber"
-         android:layout_width="75dp"
-         android:layout_height="68dp"
-         android:layout_marginTop="100dp"
-         android:layout_marginEnd="72dp"
-         android:ems="10"
-         android:inputType="number"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
-
-     <EditText
-         android:id="@+id/valueCardsDealerEditTextNumber"
-         android:layout_width="49dp"
-         android:layout_height="49dp"
-         android:layout_marginStart="100dp"
-         android:layout_marginBottom="136dp"
-         android:ems="10"
-         android:inputType="number"
-         app:layout_constraintBottom_toTopOf="@+id/card1BlankPlayerImageView"
-         app:layout_constraintStart_toStartOf="parent" />
-
-     <EditText
-         android:id="@+id/moneyEditTextNumber"
-         android:layout_width="107dp"
-         android:layout_height="32dp"
-         android:layout_marginStart="44dp"
-         android:layout_marginTop="8dp"
-         android:ems="10"
-         android:inputType="number"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
-
-     <ImageView
          android:id="@+id/bannerBlackjackImageView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -419,10 +340,9 @@
          android:id="@+id/totalBetTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginBottom="70dp"
          android:text="TextView"
          android:textSize="24sp"
-         app:layout_constraintBottom_toBottomOf="@+id/card2BlankPlayerImageView"
+         app:layout_constraintBottom_toTopOf="@+id/hitImageButton"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="parent" />
 
@@ -431,10 +351,22 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginEnd="50dp"
-         android:layout_marginBottom="60dp"
+         android:layout_marginBottom="120dp"
          android:text="TextView"
          android:textSize="34sp"
-         app:layout_constraintBottom_toBottomOf="@+id/valueCardsPlayerEditTextNumber"
+         app:layout_constraintBottom_toTopOf="@+id/dealImageButton"
          app:layout_constraintEnd_toEndOf="parent" />
+
+     <LinearLayout
+         android:id="@+id/linearLayout"
+         android:layout_width="300dp"
+         android:layout_height="40dp"
+         android:orientation="horizontal"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.495"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintVertical_bias="0.412"></LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

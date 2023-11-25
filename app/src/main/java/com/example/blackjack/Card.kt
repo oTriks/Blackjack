@@ -5,7 +5,7 @@ class Card {
         HEARTS, DIAMONDS, CLUBS, SPADES
     }
     enum class Rank {
-        TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
+        TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE, HIDDEN
     }
 
     data class Card(val suit: Suit, val rank: Rank)
