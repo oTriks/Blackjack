@@ -21,6 +21,7 @@ class Hand {
                     aces++
                     1
                 }
+                Card.Rank.HIDDEN -> 0
             }
         }
         val pointsWithAceAsEleven = pointsWithAceAsOne + aces * 10
