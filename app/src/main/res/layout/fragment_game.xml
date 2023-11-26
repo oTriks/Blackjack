@@ -246,6 +246,17 @@
          app:layout_constraintTop_toTopOf="parent" />
 
      <ImageView
+         android:id="@+id/cardPileImageView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="124dp"
+         android:scaleX="0.32"
+         android:scaleY="0.32"
+         android:src="@drawable/card_dark"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+
+     <ImageView
          android:id="@+id/madeBetMarker5ImageView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
