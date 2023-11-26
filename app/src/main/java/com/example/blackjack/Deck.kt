@@ -14,21 +14,27 @@ var cards: MutableList<Card.Card> = mutableListOf()
         }
     }
 
-    fun dealHand(playerHand: MutableList<Card.Card>, dealerHand: MutableList<Card.Card>) {
+    fun dealHand(playerHand: Hand, dealerHand: Hand) {
         var card = cards.random()
-        playerHand.add(card)
+        playerHand.cards.add(card)
         cards.remove(card)
 
         card = cards.random()
-        dealerHand.add(card)
+        dealerHand.cards.add(card)
         cards.remove(card)
 
         card = cards.random()
-        playerHand.add(card)
+        playerHand.cards.add(card)
         cards.remove(card)
 
         card = cards.random()
-        dealerHand.add(card)
+        dealerHand.hiddenCard = card
+        cards.remove(card)
+    }
+
+    fun drawCard(hand: MutableList<Card.Card>) {
+        val card = cards.random()
+        hand.add(card)
         cards.remove(card)
     }
 

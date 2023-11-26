@@ -2,9 +2,11 @@ package com.example.blackjack
 
 class Hand {
     var cards: MutableList<Card.Card> = mutableListOf()
+    var hiddenCard: Card.Card? = null
     fun calculatePoints(hand: List<Card.Card>): Pair<Int, Int>{
         var pointsWithAceAsOne   = 0
         var aces = 0
+
 
         for (card in hand) {
             pointsWithAceAsOne  += when (card.rank) {
@@ -27,5 +29,11 @@ class Hand {
         val pointsWithAceAsEleven = pointsWithAceAsOne + aces * 10
 
         return Pair(pointsWithAceAsOne, pointsWithAceAsEleven)
+    }
+    fun revealHiddenCard() {
+        if (hiddenCard != null) {
+            cards.add(hiddenCard!!)
+            hiddenCard = null
+        }
     }
 }
