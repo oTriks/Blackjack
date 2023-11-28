@@ -8,5 +8,5 @@ class Card {
         TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE, HIDDEN
     }
 
-    data class Card(val suit: Suit, val rank: Rank)
+    data class PlayingCard(val suit: Suit, val rank: Rank)
 }

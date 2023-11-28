@@ -1,9 +1,9 @@
 package com.example.blackjack
 
 class Hand {
-    var cards: MutableList<Card.Card> = mutableListOf()
-    var hiddenCard: Card.Card? = null
-    fun calculatePoints(hand: List<Card.Card>): Pair<Int, Int>{
+    var cards: MutableList<Card.PlayingCard> = mutableListOf()
+    var hiddenCard: Card.PlayingCard? = null
+    fun calculatePoints(hand: List<Card.PlayingCard>): Pair<Int, Int>{
         var pointsWithAceAsOne   = 0
         var aces = 0
 
@@ -30,10 +30,15 @@ class Hand {
 
         return Pair(pointsWithAceAsOne, pointsWithAceAsEleven)
     }
+
+
+
+
     fun revealHiddenCard() {
         if (hiddenCard != null) {
             cards.add(hiddenCard!!)
             hiddenCard = null
+
         }
     }
 }
