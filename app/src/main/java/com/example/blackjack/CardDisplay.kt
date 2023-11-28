@@ -19,7 +19,7 @@ class CardDisplay {
         Card.Suit.SPADES to spadesImages,
         Card.Suit.CLUBS to clubsImages
     )
-    fun getCardImage(card: Card.Card): Int {
+    fun getCardImage(card: Card.PlayingCard): Int {
         return cardImages[card.suit]?.get(card.rank) ?: R.drawable.card_blank
     }
 
