@@ -6,6 +6,8 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.ActionBar
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -14,9 +16,15 @@ import androidx.constraintlayout.widget.ConstraintLayout
 
 
 
-class Deck(private val context: Context) {
+class Deck(private val context: Context, private val firstCardImageView: ImageView,
+           private val secondCardImageView: ImageView,
+           private val thirdCardImageView: ImageView,
+           private val fourthCardImageView: ImageView,
+           private val fifthCardImageView: ImageView,
+           private val sixthCardImageView: ImageView) {
     var cards: MutableList<Card.PlayingCard> = mutableListOf()
     var cardDisplay = CardDisplay()
+    val handler = Handler(Looper.getMainLooper())
 //    var cardToImageViewMap: MutableMap<Card.PlayingCard, ImageView> = mutableMapOf()
 
     init {
@@ -76,23 +84,47 @@ fun animateCardDealingWithRotation(
 
 
         fun dealHand(playerHand: Hand, dealerHand: Hand) {
+//            playerHand.cards.add(Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO))
+//            playerHand.cards.add(Card.PlayingCard(Card.Suit.DIAMONDS, Card.Rank.ACE))
+//
+//            dealerHand.cards.add(Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO))
+//            dealerHand.hiddenCard = Card.PlayingCard(Card.Suit.CLUBS, Card.Rank.QUEEN)
 
+            val delayMillisSecondCard = 500L
+            val delayMillisThirdCard = 1000L
+            val delayMillisForthCard = 1500L
         var card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
+            performDealingAnimation(firstCardImageView, secondCardImageView.x, secondCardImageView.y, firstCardImageView.x, firstCardImageView.y, 0f, 180f)
+            firstCardImageView.visibility = View.VISIBLE
 
-        card = cards.random()
+
+            card = cards.random()
         dealerHand.cards.add(card)
         cards.remove(card)
+            handler.postDelayed({
+            performDealingAnimation(thirdCardImageView, fourthCardImageView.x, fourthCardImageView.y, thirdCardImageView.x, thirdCardImageView.y, 0f, 180f)
+                thirdCardImageView.visibility = View.VISIBLE
+            }, delayMillisSecondCard)
 
-        card = cards.random()
+            card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
+                handler.postDelayed({
+                performDealingAnimation(fifthCardImageView, secondCardImageView.x, secondCardImageView.y, fifthCardImageView.x, fifthCardImageView.y, 0f, 180f)
+                    fifthCardImageView.visibility = View.VISIBLE
+                }, delayMillisThirdCard)
 
-        card = cards.random()
+            card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
-    }
+            handler.postDelayed({
+            performDealingAnimation(sixthCardImageView, fourthCardImageView.x, fourthCardImageView.y, sixthCardImageView.x, sixthCardImageView.y, 0f, 180f)
+                sixthCardImageView.visibility = View.VISIBLE
+                                }, delayMillisForthCard)
+
+        }
 
     fun drawCard(hand: MutableList<Card.PlayingCard>) {
         val card = cards.random()
@@ -100,44 +132,4 @@ fun animateCardDealingWithRotation(
         cards.remove(card)
     }
 
-//    fun animateCardDealing(card: Card, constraintLayout: ConstraintLayout) {
-//        val newCardImageView = ImageView(constraintLayout.context)
-//        newCardImageView.setImageResource(cardDisplay.getCardImage(card))
-//        constraintLayout.addView(newCardImageView)
-//        val startX = 0f
-//        val startY = 0f
-//        newCardImageView.x = startX
-//        newCardImageView.y = startY
-//
-//        val endX =
-//        val endY =
-//
-//
-//        val translateX = ObjectAnimator.ofFloat(newCardImageView, View.TRANSLATION_X, startX, endX)
-//        val translateY = ObjectAnimator.ofFloat(newCardImageView, View.TRANSLATION_Y, startY, endY)
-//
-//
-//        val fadeIn = ObjectAnimator.ofFloat(newCardImageView, View.ALPHA, 0f, 1f)
-//
-//        val animatorSet = AnimatorSet()
-//        animatorSet.playTogether(translateX, translateY, fadeIn)
-//        animatorSet.duration = 2000
-//
-//        animatorSet.start()
-//
-//        // Optionally, remove the ImageView after the animation completes
-//        animatorSet.addListener(object : AnimatorListenerAdapter() {
-//            override fun onAnimationEnd(animation: Animator?) {
-//                constraintLayout.removeView(newCardImageView)
-//            }
-//        })
-//    }
-
-//    fun drawCard(hand: Hand) {
-//        val card = cards.random()
-//        cards.remove(card)
-//        val imageView = ImageView(context)
-//        imageView.setImageResource(cardDisplay.getCardImage(card))
-////        addCardToHandAndMap(hand, card, imageView)
-//    }
 }

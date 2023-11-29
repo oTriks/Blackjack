@@ -232,14 +232,24 @@
          app:layout_constraintTop_toTopOf="parent" />
 
      <ImageView
-         android:id="@+id/cardDarkDealerTestImageView"
+         android:id="@+id/cardDealingOutCardsToDealerImageView"
          android:layout_width="50dp"
          android:layout_height="80dp"
-         android:layout_marginTop="276dp"
-         android:layout_marginEnd="16dp"
+         android:layout_marginTop="12dp"
+         android:layout_marginEnd="12dp"
          android:src="@drawable/card_dark"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toTopOf="parent" />
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+
+     <ImageView
+         android:id="@+id/cardDealingOutCardsToPlayerImageView"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
+         android:layout_marginTop="12dp"
+         android:layout_marginEnd="12dp"
+         android:src="@drawable/card_dark"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
      <ImageView
          android:id="@+id/cardPileImageView"
@@ -355,6 +365,38 @@
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
+     <ImageView
+         android:id="@+id/bannerSplitImageView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginBottom="25dp"
+         android:src="@drawable/game_end_split"
+         app:layout_constraintBottom_toTopOf="@+id/splitImageButton"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
+
+     <ImageView
+         android:id="@+id/bannerBlackjackSplitPlayerImageView"
+         android:layout_width="230dp"
+         android:layout_height="67dp"
+         android:layout_marginTop="28dp"
+         android:src="@drawable/game_end_split_blackjack"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.348"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/pointsPlayerTextView" />
+
+     <ImageView
+         android:id="@+id/bannerBlackjackSplitDealerImageView"
+         android:layout_width="230dp"
+         android:layout_height="67dp"
+         android:layout_marginTop="12dp"
+         android:src="@drawable/game_end_split_blackjack"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.348"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/cardDarkDealerImageView" />
+
      <TextView
          android:id="@+id/totalBetTextView"
          android:layout_width="wrap_content"
@@ -369,19 +411,18 @@
          android:id="@+id/pointsPlayerTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginEnd="50dp"
-         android:layout_marginBottom="120dp"
+         android:layout_marginBottom="12dp"
          android:text="TextView"
          android:textSize="34sp"
-         app:layout_constraintBottom_toTopOf="@+id/dealImageButton"
-         app:layout_constraintEnd_toEndOf="parent" />
+         app:layout_constraintBottom_toTopOf="@+id/card2BlankPlayerImageView"
+         app:layout_constraintStart_toEndOf="@+id/card2BlankPlayerImageView" />
 
      <TextView
          android:id="@+id/pointsDealerTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginTop="200dp"
-         android:layout_marginEnd="16dp"
+         android:layout_marginTop="8dp"
+         android:layout_marginEnd="40dp"
          android:text="TextView"
          android:textSize="34sp"
          app:layout_constraintEnd_toEndOf="parent"
