@@ -1,5 +1,10 @@
 package com.example.blackjack
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.view.View
+import android.widget.ImageView
+
 class Hand {
     var cards: MutableList<Card.PlayingCard> = mutableListOf()
     var hiddenCard: Card.PlayingCard? = null
@@ -39,6 +44,20 @@ class Hand {
             cards.add(hiddenCard!!)
             hiddenCard = null
 
+
         }
     }
+
+//    fun flipCard(cardImageView: ImageView) {
+//        val animator1 = ObjectAnimator.ofFloat(cardImageView, View.ROTATION_Y, 0f, 180f)
+//        animator1.duration = 500
+//
+//        val animator2 = ObjectAnimator.ofFloat(cardImageView, View.ROTATION_Y, 180f, 0f)
+//        animator2.duration = 500
+//
+//        val set = AnimatorSet()
+//        set.playSequentially(animator1, animator2)
+//
+//        set.start()
+//    }
 }

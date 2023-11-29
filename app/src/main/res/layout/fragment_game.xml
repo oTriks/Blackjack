@@ -169,89 +169,84 @@
 
      <ImageView
          android:id="@+id/cardBlankDealerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginStart="60dp"
-         android:scaleX="0.3"
-         android:scaleY="0.3"
+         android:layout_width="50dp"
+         android:layout_height="80dp"
+         android:layout_marginStart="124dp"
+         android:layout_marginTop="92dp"
          android:src="@drawable/card_blank"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
 
      <ImageView
          android:id="@+id/cardNextCardDealer"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_width="50dp"
+         android:layout_height="80dp"
          android:layout_marginStart="120dp"
-         android:layout_marginTop="70dp"
-         android:scaleX="0.3"
-         android:scaleY="0.3"
+         android:layout_marginTop="172dp"
          android:src="@drawable/card_blank"
          app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.717"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
      <ImageView
          android:id="@+id/card1BlankPlayerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginStart="20dp"
-         android:layout_marginTop="80dp"
-         android:scaleX="0.45"
-         android:scaleY="0.45"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
+         android:layout_marginStart="100dp"
+         android:layout_marginTop="472dp"
          android:src="@drawable/card_blank"
-         app:layout_constraintEnd_toStartOf="@+id/card2BlankPlayerImageView"
-         app:layout_constraintHorizontal_bias="0.0"
          app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/cardBlankDealerImageView" />
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
      <ImageView
          android:id="@+id/card2BlankPlayerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="80dp"
-         android:layout_marginEnd="80dp"
-         android:scaleX="0.45"
-         android:scaleY="0.45"
-         android:src="@drawable/card_blank"
-         app:layout_constraintStart_toStartOf="parent"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
+         android:layout_marginStart="12dp"
 
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
+         android:layout_marginTop="472dp"
+         android:src="@drawable/card_blank"
+         app:layout_constraintStart_toEndOf="@+id/card1BlankPlayerImageView"
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
      <ImageView
          android:id="@+id/cardNextCardImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="70dp"
-         android:layout_marginEnd="170dp"
-         android:scaleX="0.45"
-         android:scaleY="0.45"
-         android:src="@drawable/card_blank"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
 
+         android:layout_marginTop="472dp"
+         android:layout_marginEnd="152dp"
+         android:src="@drawable/card_blank"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="1.0"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
      <ImageView
          android:id="@+id/cardDarkDealerImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginEnd="30dp"
-         android:scaleX="0.32"
-         android:scaleY="0.32"
+         android:layout_width="50dp"
+         android:layout_height="80dp"
+         android:layout_marginStart="8dp"
+         android:layout_marginTop="92dp"
+         android:src="@drawable/card_dark"
+         app:layout_constraintStart_toEndOf="@+id/cardBlankDealerImageView"
+         app:layout_constraintTop_toTopOf="parent" />
+
+     <ImageView
+         android:id="@+id/cardDarkDealerTestImageView"
+         android:layout_width="50dp"
+         android:layout_height="80dp"
+         android:layout_marginTop="276dp"
+         android:layout_marginEnd="16dp"
          android:src="@drawable/card_dark"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
 
      <ImageView
          android:id="@+id/cardPileImageView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="124dp"
-         android:scaleX="0.32"
-         android:scaleY="0.32"
+         android:layout_width="80dp"
+         android:layout_height="100dp"
+         android:layout_marginStart="20dp"
+         android:layout_marginTop="292dp"
          android:src="@drawable/card_dark"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
