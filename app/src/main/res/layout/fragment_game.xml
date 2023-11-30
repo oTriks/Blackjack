@@ -136,7 +136,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginStart="144dp"
-         android:layout_marginBottom="48dp"
+         android:layout_marginBottom="56dp"
          android:scaleX="0.3"
          android:scaleY="0.3"
          android:src="@drawable/sign_hit"
@@ -390,12 +390,12 @@
          android:id="@+id/bannerBlackjackSplitDealerImageView"
          android:layout_width="230dp"
          android:layout_height="67dp"
-         android:layout_marginTop="12dp"
+         android:layout_marginTop="104dp"
          android:src="@drawable/game_end_split_blackjack"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.348"
+         app:layout_constraintHorizontal_bias="0.419"
          app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="@+id/cardDarkDealerImageView" />
+         app:layout_constraintTop_toTopOf="parent" />
 
      <TextView
          android:id="@+id/totalBetTextView"
