@@ -11,8 +11,6 @@ class Hand {
     fun calculatePoints(hand: List<Card.PlayingCard>): Pair<Int, Int>{
         var pointsWithAceAsOne   = 0
         var aces = 0
-
-
         for (card in hand) {
             pointsWithAceAsOne  += when (card.rank) {
                 Card.Rank.TWO -> 2
@@ -63,21 +61,6 @@ class Hand {
         return Pair(pointsWithAceAsOne, pointsWithAceAsEleven)
     }
 
-
-    fun flipCard(cardImageView: ImageView) {
-        val animator1 = ObjectAnimator.ofFloat(cardImageView, View.ROTATION_Y, 0f, 180f)
-        animator1.duration = 500
-
-//        val animator2 = ObjectAnimator.ofFloat(cardImageView, View.ROTATION_Y, 180f, 0f)
-//        animator2.duration = 500
-
-//        val set = AnimatorSet()
-//        set.playSequentially(animator1, animator2)
-        val set = AnimatorSet()
-        set.playSequentially(animator1)
-
-        set.start()
-    }
 
     fun revealHiddenCard() {
 

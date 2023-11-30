@@ -93,14 +93,16 @@ fun animateCardDealingWithRotation(
             val delayMillisSecondCard = 500L
             val delayMillisThirdCard = 1000L
             val delayMillisForthCard = 1500L
-        var card = cards.random()
-        playerHand.cards.add(card)
+//        var card = cards.random()
+            var card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
+            playerHand.cards.add(card)
         cards.remove(card)
             performDealingAnimation(firstCardImageView, secondCardImageView.x, secondCardImageView.y, firstCardImageView.x, firstCardImageView.y, 0f, 180f)
             firstCardImageView.visibility = View.VISIBLE
 
 
-            card = cards.random()
+//            card = cards.random()
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TEN)
         dealerHand.cards.add(card)
         cards.remove(card)
             handler.postDelayed({
@@ -108,7 +110,8 @@ fun animateCardDealingWithRotation(
                 thirdCardImageView.visibility = View.VISIBLE
             }, delayMillisSecondCard)
 
-            card = cards.random()
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.EIGHT)
+//            card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
                 handler.postDelayed({
@@ -116,7 +119,8 @@ fun animateCardDealingWithRotation(
                     fifthCardImageView.visibility = View.VISIBLE
                 }, delayMillisThirdCard)
 
-            card = cards.random()
+            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.SEVEN)
+//            card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
             handler.postDelayed({
