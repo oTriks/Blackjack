@@ -392,21 +392,26 @@ fun handleVisibilityChangesWithAnimation(banner: View) {
                     Handler().postDelayed({
                         if (dealerHand.isBlackjack()) {
                             animations.fadeInImageView(bannerBlackjackDealerSplit)
-                            bannerBlackjackDealerSplit.visibility = View.VISIBLE
+                            bannerBlackjackDealerSplit.visibility = View.VISIBLE   // starta lite tidigare
                         Handler().postDelayed({
-                            animations.fadeInImageView(bannerSplit)
-                            animations.moveImageViewUp(bannerSplit)
-                            bannerSplit.visibility = View.VISIBLE
+                            animations.fadeInAndMoveUpImageView(bannerSplit)
+                           // animations.fadeInImageView(bannerSplit)
+                          //  animations.moveImageViewUp(bannerSplit)
+                            bannerManager.fadeOutBanner(bannerSplit)
+
                             handleVisibilityChangesWithAnimation(bannerSplit)
                         }, delayMillisBannerSplit)
                         Handler().postDelayed({
-                            bannerBlackjackDealerSplit.visibility = View.INVISIBLE
+                         //   bannerBlackjackDealerSplit.visibility = View.INVISIBLE
+                            animations.animateImageDisappear(bannerBlackjackDealerSplit)
+
 //                            animations.animateImageDisappear(bannerBlackjackPlayerSplit)
-                            bannerBlackjackPlayerSplit.visibility = View.INVISIBLE
+                            animations.animateImageDisappear(bannerBlackjackPlayerSplit)
+
+                     //       bannerBlackjackPlayerSplit.visibility = View.INVISIBLE
                         }, delayMillisRemoveBannersBlackjack)
                         } else{
-                            animations.fadeInAndMoveUpImageView(bannerWin)
-                            bannerWin.visibility = View.VISIBLE
+                            animations.fadeInAndMoveUpImageView(bannerWin) // Byt ut till blackjack?
                             animations.animateImageDisappear(bannerBlackjackPlayerSplit)
                             bannerManager.fadeOutBanner(bannerWin)
                             handleVisibilityChangesWithAnimation(bannerWin)
@@ -416,9 +421,9 @@ fun handleVisibilityChangesWithAnimation(banner: View) {
                 }, delayMillisBlackjackPlayerBanner)
 
                     Handler().postDelayed({  //   DESSA UPP ETT STEG?
-                        bannerBlackjack.visibility = View.VISIBLE   //ESSA UPP ETT STEG?
+                   //     bannerBlackjack.visibility = View.VISIBLE   //ESSA UPP ETT STEG?
                         handleVisibilityChangesWithAnimation(bannerBlackjack)  //ESSA UPP ETT STEG?
-                    }, 1000)   //ESSA UPP ETT STEG?
+                    }, 5300)   //ESSA UPP ETT STEG?
                 gameEnd()                //ESSA UPP ETT STEG?
             }else
 

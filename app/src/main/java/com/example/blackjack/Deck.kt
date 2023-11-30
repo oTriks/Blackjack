@@ -110,7 +110,7 @@ fun animateCardDealingWithRotation(
                 thirdCardImageView.visibility = View.VISIBLE
             }, delayMillisSecondCard)
 
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.EIGHT)
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TEN)
 //            card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
@@ -119,7 +119,7 @@ fun animateCardDealingWithRotation(
                     fifthCardImageView.visibility = View.VISIBLE
                 }, delayMillisThirdCard)
 
-            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.SEVEN)
+            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.ACE)
 //            card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
