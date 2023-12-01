@@ -12,12 +12,12 @@ class MainActivity : AppCompatActivity() {
         val highscoreButton = findViewById<ImageButton>(R.id.highscoreImageButton)
         playButton.setOnClickListener {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.constraintlayout, GameFragment())
+            transaction.replace(R.id.insuranceImageView, GameFragment())
             transaction.commit()
         }
         highscoreButton.setOnClickListener {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.constraintlayout, GameFragment())
+            transaction.replace(R.id.insuranceImageView, GameFragment())
             transaction.commit()
         }
 
