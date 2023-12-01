@@ -84,17 +84,11 @@ fun animateCardDealingWithRotation(
 
 
         fun dealHand(playerHand: Hand, dealerHand: Hand) {
-//            playerHand.cards.add(Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO))
-//            playerHand.cards.add(Card.PlayingCard(Card.Suit.DIAMONDS, Card.Rank.ACE))
-//
-//            dealerHand.cards.add(Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO))
-//            dealerHand.hiddenCard = Card.PlayingCard(Card.Suit.CLUBS, Card.Rank.QUEEN)
-
             val delayMillisSecondCard = 500L
             val delayMillisThirdCard = 1000L
             val delayMillisForthCard = 1500L
 //        var card = cards.random()
-            var card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
+            var card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.SIX)
             playerHand.cards.add(card)
         cards.remove(card)
             performDealingAnimation(firstCardImageView, secondCardImageView.x, secondCardImageView.y, firstCardImageView.x, firstCardImageView.y, 0f, 180f)
@@ -102,7 +96,7 @@ fun animateCardDealingWithRotation(
 
 
 //            card = cards.random()
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TEN)
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.SEVEN)
         dealerHand.cards.add(card)
         cards.remove(card)
             handler.postDelayed({
@@ -110,7 +104,7 @@ fun animateCardDealingWithRotation(
                 thirdCardImageView.visibility = View.VISIBLE
             }, delayMillisSecondCard)
 
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TEN)
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
 //            card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)

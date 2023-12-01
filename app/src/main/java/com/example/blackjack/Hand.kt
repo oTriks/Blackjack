@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 
 class Hand {
     var cards: MutableList<Card.PlayingCard> = mutableListOf()
@@ -72,7 +73,6 @@ class Hand {
     }
     fun isBlackjack(): Boolean {
         return cards.size == 2 && calculatePointsForBlackjack(cards).first == 21
-
     }
 
 
