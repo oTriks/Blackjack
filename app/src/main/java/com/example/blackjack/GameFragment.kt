@@ -238,19 +238,6 @@ class GameFragment : Fragment() {
             }
         }
 
-//        fun compareHands(playerPoints: Pair<Int, Int>, dealerPoints: Int): String {
-//            val (playerPointsOne, playerPointsEleven) = playerPoints
-//
-//            return when {
-//                playerPointsEleven > 21 -> "Dealer"  // Player busted with 11
-//                playerPointsOne > 21 && playerPointsEleven > 21 -> "Dealer"  // Player busted with both 1 and 11
-//                dealerPoints > 21 -> "Player"  // Dealer busted
-//                playerPointsEleven == 21 -> "Player"  // Player has blackjack with 11
-//                playerPointsEleven > dealerPoints -> "Player: $playerPointsOne/$playerPointsEleven"  // Player wins with 11
-//                dealerPoints <= 21 -> "Dealer"  // Dealer wins
-//                else -> "Draw"  // All other cases
-//            }
-//        }
 
 
         fun flipCard(imageView: ImageView, hand: Hand) {
@@ -275,108 +262,107 @@ class GameFragment : Fragment() {
 
 
 
-        fun dealToDealer(dealerHand: Hand, deck: Deck, dealerPointsText: TextView) {
+fun drawCardDealer() {
+    deck.drawCard(dealerHand.cards)
+    val newCard = dealerHand.cards.last()
+    val newCardImageView = ImageView(context)
+    newCardImageView.setImageResource(cardDisplay.getCardImage(newCard))
 
+    val offsetDp = 15f
+    val density = resources.displayMetrics.density
+    val offsetPx = (offsetDp * density).toInt()
+    val cardDarkDealerEndX = cardDarkDealer.x + offsetPx
+    val cardBlankDealerEndX = cardBlankDealer.x + offsetPx
+
+    animations.moveCard(cardDarkDealer, cardDarkDealer.x, cardDarkDealer.y, cardBlankDealerEndX, cardBlankDealer.y, 500L, 0L)
+
+    deck.performDealingAnimation(cardNextCardDealer, cardDealingOutCardsToDealer.x, cardDealingOutCardsToDealer.y, cardDarkDealerEndX, cardDarkDealer.y, 0f, 180f)
+
+    newCardImageView?.let {
+        val image = cardDisplay.getCardImage(newCard)
+        it.setImageResource(image)
+        cardNextCardDealer.visibility = View.VISIBLE
+        it.visibility = View.VISIBLE
+        val index = dealerHand.cards.indexOf(newCard)
+        if (index < dealerCardImageViews.size) {
+            dealerCardImageViews[index].setImageResource(cardDisplay.getCardImage(newCard))
+            dealerCardImageViews[index].visibility = View.VISIBLE
+        }
+    }
+}
+        fun determineWinner(playerHand: Hand, dealerHand: Hand) {
+            val playerPoints = playerHand.calculatePoints(playerHand.cards)
+            val winner = compareHands(playerPoints.first, dealerHand.calculatePoints(dealerHand.cards).first)
+
+            when (winner) {
+                "Player" -> {
+                    bannerWin.visibility = View.VISIBLE
+                    moveCardsToPile(bannerWin)
+                }
+                "Dealer" -> {
+                    bannerLose.visibility = View.VISIBLE
+                    moveCardsToPile(bannerLose)
+                }
+                "Draw" -> {
+                    bannerSplit.visibility = View.VISIBLE
+                    moveCardsToPile(bannerSplit)
+                }
+            }
+            gameEnd()
+        }
+        fun checKDealerPoints(dealerHand: Hand, dealerPointsText: TextView) {
             val (pointsWithAceAsOne, pointsWithAceAsEleven) = dealerHand.calculatePoints(dealerHand.cards)
-            if (pointsWithAceAsOne > 21 && pointsWithAceAsEleven > 21) {
-                if (pointsWithAceAsOne == pointsWithAceAsEleven || pointsWithAceAsEleven > 21) {
-                    dealerPointsText.text = pointsWithAceAsOne.toString()
-                } else {
-                    dealerPointsText.text = "$pointsWithAceAsOne/$pointsWithAceAsEleven"
-                }
-                bannerWin.visibility = View.VISIBLE
-                Handler().postDelayed({
-                    bannerWin.visibility = View.INVISIBLE
-                }, 2000)
-                return
-            }
-            if (pointsWithAceAsOne == pointsWithAceAsEleven || pointsWithAceAsEleven > 21) {
+
+            if (pointsWithAceAsEleven in 17..21) {
+                dealerPointsText.text = pointsWithAceAsEleven.toString()
+                determineWinner(playerHand, dealerHand)
+
+
+            } else if(pointsWithAceAsEleven > 21){
                 dealerPointsText.text = pointsWithAceAsOne.toString()
-            } else {
-                dealerPointsText.text = "$pointsWithAceAsOne/$pointsWithAceAsEleven"
+                determineWinner(playerHand, dealerHand)
+
             }
+            else {
+                dealerPointsText.text = "$pointsWithAceAsOne/$pointsWithAceAsEleven"
+                drawCardDealer()
+                checKDealerPoints(dealerHand, dealerPointsText)
+                determineWinner(playerHand, dealerHand)
 
-            if (pointsWithAceAsOne < 17 || pointsWithAceAsEleven < 17) {
-                deck.drawCard(dealerHand.cards)
-                val newCard = dealerHand.cards.last()
-                val newCardImageView = ImageView(context)
-                newCardImageView.setImageResource(cardDisplay.getCardImage(newCard))
-
-                val offsetDp = 15f
-                val density = resources.displayMetrics.density
-                val offsetPx = (offsetDp * density).toInt()
-                val cardDarkDealerEndX = cardDarkDealer.x + offsetPx
-                val cardBlankDealerEndX = cardBlankDealer.x + offsetPx
-
-                animations.moveCard(
-                    cardDarkDealer,
-                    cardDarkDealer.x,
-                    cardDarkDealer.y,
-                    cardBlankDealerEndX,
-                    cardBlankDealer.y,
-                    500L,
-                    0L
-                )
-
-                deck.performDealingAnimation(
-                    cardNextCardDealer,
-                    cardDealingOutCardsToDealer.x,
-                    cardDealingOutCardsToDealer.y,
-                    cardDarkDealerEndX,
-                    cardDarkDealer.y,
-                    0f,
-                    180f
-                )
+            }
+        }
 
 
-                newCardImageView?.let {
-                    val image = cardDisplay.getCardImage(newCard)
-                    it.setImageResource(image)
-                    cardNextCardDealer.visibility = View.VISIBLE
-                    it.visibility = View.VISIBLE
-                    val index = dealerHand.cards.indexOf(newCard)
-                    if (index < dealerCardImageViews.size) {
-                        dealerCardImageViews[index].setImageResource(
-                            cardDisplay.getCardImage(
-                                newCard
-                            )
-                        )
-                        dealerCardImageViews[index].visibility = View.VISIBLE
-                    }
-                }
 
-                Handler().postDelayed({
-                    dealToDealer(dealerHand, deck, dealerPointsText)
-                }, 1000)
-            } else {
-                val playerPoints = playerHand.calculatePoints(playerHand.cards)
-//                val winner = compareHands(playerPoints, pointsWithAceAsOne)
+
+
+
+
+
+
+//                Handler().postDelayed({
+//                    dealToDealer(dealerHand, deck, dealerPointsText)
+//                }, 1000)
+//            } else {
+//                val playerPoints = playerHand.calculatePoints(playerHand.cards)
+//                winner = compareHands(playerPoints.first, pointsWithAceAsOne)
 //
 //                when (winner) {
 //                    "Player" -> {
 //                        bannerWin.visibility = View.VISIBLE
-//                        handleVisibilityChangesWithAnimation(bannerWin)
+//                        moveCardsToPile(bannerWin)
 //                    }
+//
 //                    "Dealer" -> {
 //                        bannerLose.visibility = View.VISIBLE
-//                        handleVisibilityChangesWithAnimation(bannerLose)
-                winner = compareHands(playerPoints.first, pointsWithAceAsOne)
+//                        moveCardsToPile(bannerLose)
+//                    }
+//                }
+//
+//                gameEnd()
+//            }
 
-                when (winner) {
-                    "Player" -> {
-                        bannerWin.visibility = View.VISIBLE
-                        moveCardsToPile(bannerWin)
-                    }
 
-                    "Dealer" -> {
-                        bannerLose.visibility = View.VISIBLE
-                        moveCardsToPile(bannerLose)
-                    }
-                }
-
-                gameEnd()
-            }
-        }
 
 
         fun setupMarker(
@@ -430,6 +416,31 @@ class GameFragment : Fragment() {
             textView.text = pointsText
         }
 
+//        fun Hand.updatePointsDealerText(textView: TextView) {     // Gillade detta!!
+//            val pointsWithAceAsOne = calculatePoints(cards).first
+//            val pointsWithAceAsEleven = calculatePoints(cards).second
+//            val pointsText =
+//                if (pointsWithAceAsEleven in 16..21){
+//                "$pointsWithAceAsEleven"
+//            }else if (pointsWithAceAsOne == pointsWithAceAsEleven || pointsWithAceAsEleven > 21) {
+//                    pointsWithAceAsOne.toString()
+//            } else{
+//                    "$pointsWithAceAsOne/$pointsWithAceAsEleven"
+//                }
+//            textView.text = pointsText
+//        }
+
+
+//                if (pointsWithAceAsOne == pointsWithAceAsEleven || pointsWithAceAsEleven > 21) {
+//                    pointsWithAceAsOne.toString()
+//                }else if (hasPlayerStood){
+//                    "$pointsWithAceAsEleven"
+//                }
+//                else {
+//                    "$pointsWithAceAsOne/$pointsWithAceAsEleven"
+//                }
+
+
 
 
         fun checkForBlackjack(playerHand: Hand, dealerHand: Hand) {
@@ -478,6 +489,7 @@ class GameFragment : Fragment() {
                     playerHand.updatePointsText(pointsPlayerText, false)
                     animations.fadeInTextView(pointsPlayerText)
                     dealerHand.updatePointsText(pointsDealerText, false)
+//                    dealerHand.updatePointsDealerText(pointsDealerText)
                     animations.fadeInTextView(pointsDealerText)
                 }, delayButtonsContinue)
             }
@@ -501,6 +513,9 @@ class GameFragment : Fragment() {
             return dealerHand.cards.isNotEmpty() && dealerHand.cards[0].rank == Card.Rank.ACE
         }
 
+
+
+
         fun insurance(){
             animations.buttonOutLeftSide(yes, requireContext(), 1000L)
             animations.buttonOutRightSide(no,requireContext(), 1000L)
@@ -519,7 +534,7 @@ class GameFragment : Fragment() {
                     animations.removeImage(bannerBlackjackDealerSplit)
                 }, 4700)
             } else{
-                dealToDealer(dealerHand, deck, pointsDealerText)
+                checKDealerPoints(dealerHand, pointsDealerText)
             }
 
         }
@@ -633,6 +648,9 @@ class GameFragment : Fragment() {
 
 
         stand.setOnClickListener {
+//            dealerHand.updatePointsDealerText(pointsDealerText)
+            dealerHand.updatePointsText(pointsDealerText, false)
+
             playerHand.updatePointsText(pointsPlayerText, true)
 
             animations.buttonOutRightSide(hit, requireContext(), 1000L)
@@ -652,7 +670,12 @@ class GameFragment : Fragment() {
                 }
             }else {
             flipCard(cardDarkDealer, dealerHand)
-                dealToDealer(dealerHand, deck, pointsDealerText)
+//                dealerHand.updatePointsDealerText(pointsDealerText)
+//                val dealerPointsText = pointsDealerText.text.toString()
+//                val dealerPoints = dealerPointsText.toIntOrNull() ?: 0
+//                isBust(dealerPoints)
+                checKDealerPoints(dealerHand, pointsDealerText)
+//                dealerHand.updatePointsText(pointsDealerText, false)
             }
     }
 
