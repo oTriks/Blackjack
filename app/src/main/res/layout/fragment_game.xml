@@ -428,6 +428,16 @@
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintTop_toTopOf="@+id/cardNextCardDealer" />
 
+     <TextView
+         android:id="@+id/playerMoneyTextView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="48dp"
+         android:text="TextView"
+         android:textSize="34sp"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+
      <TextSwitcher
          android:id="@+id/textSwitcher"
          android:layout_width="wrap_content"
