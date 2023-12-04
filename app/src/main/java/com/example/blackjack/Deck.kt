@@ -88,7 +88,7 @@ fun animateCardDealingWithRotation(
             val delayMillisThirdCard = 1000L
             val delayMillisForthCard = 1500L
 //        var card = cards.random()
-            var card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.SEVEN)
+            var card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.ACE)
             playerHand.cards.add(card)
         cards.remove(card)
             performDealingAnimation(firstCardImageView, secondCardImageView.x, secondCardImageView.y, firstCardImageView.x, firstCardImageView.y, 0f, 180f)
@@ -96,7 +96,7 @@ fun animateCardDealingWithRotation(
 
 
 //            card = cards.random()
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO)
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
         dealerHand.cards.add(card)
         cards.remove(card)
             handler.postDelayed({
@@ -104,7 +104,7 @@ fun animateCardDealingWithRotation(
                 thirdCardImageView.visibility = View.VISIBLE
             }, delayMillisSecondCard)
 
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.KING)
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.SEVEN)
 //            card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
@@ -113,7 +113,7 @@ fun animateCardDealingWithRotation(
                     fifthCardImageView.visibility = View.VISIBLE
                 }, delayMillisThirdCard)
 
-            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO)
+            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.FIVE)
 //            card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
@@ -124,14 +124,9 @@ fun animateCardDealingWithRotation(
 
         }
 
-    fun drawCard(hand: MutableList<Card.PlayingCard>) { // SKA HA DENNA, ANDRA ÄR TEST
-        val card = cards.random() // SKA HA DENNA, ANDRA ÄR TEST
-        hand.add(card) // SKA HA DENNA, ANDRA ÄR TEST
-        cards.remove(card) // SKA HA DENNA, ANDRA ÄR TEST
-    }  // SKA HA DENNA, ANDRA ÄR TEST
-//fun drawCard(hand: MutableList<Card.PlayingCard>, specificCard: Card.PlayingCard? = null) {
-//    val card = specificCard ?: cards.random()
-//    hand.add(card)
-//    cards.remove(card)
-//}
+    fun drawCard(hand: MutableList<Card.PlayingCard>) {
+        val card = cards.random()
+        hand.add(card)
+        cards.remove(card)
+    }
 }
