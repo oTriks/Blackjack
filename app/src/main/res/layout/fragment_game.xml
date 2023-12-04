@@ -11,8 +11,8 @@
          android:id="@+id/backgroundImageView"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
-         android:src="@drawable/gameboard"
          android:scaleType="fitXY"
+         android:src="@drawable/gameboard"
          app:layout_constraintBottom_toBottomOf="parent"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.0"
@@ -93,6 +93,28 @@
          app:layout_constraintEnd_toStartOf="@+id/marker10ImageView"
          app:layout_constraintHorizontal_bias="0.0"
          app:layout_constraintStart_toStartOf="@+id/insuranceImageView"
+         app:layout_constraintWidth_percent="0.16" />
+
+     <ImageView
+         android:id="@+id/markerWinnerDealerImageView"
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+         android:layout_marginEnd="152dp"
+         android:src="@drawable/marker_5"
+         app:layout_constraintDimensionRatio="W,1:1"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintWidth_percent="0.16" />
+
+     <ImageView
+         android:id="@+id/markerWinnerPlayerImageView"
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+         android:layout_marginEnd="132dp"
+         android:src="@drawable/marker_5"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintDimensionRatio="W,1:1"
+         app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintWidth_percent="0.16" />
 
      <ImageButton

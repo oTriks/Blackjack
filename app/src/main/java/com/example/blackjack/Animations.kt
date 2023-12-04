@@ -75,6 +75,26 @@ class Animations {
         textView.visibility = View.VISIBLE
     }
 
+    fun fadeOutTextView(textView: TextView) {
+        val fadeOut = AlphaAnimation(1f, 0f)
+        fadeOut.duration = 1000 // Adjust the duration as needed
+        textView.startAnimation(fadeOut)
+
+        fadeOut.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                // Optional: Code to run when animation starts
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                textView.visibility = View.INVISIBLE // or View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+                // Optional: Code to run when animation repeats
+            }
+        })
+    }
+
     fun fadeOutImageView(imageView: ImageView, duration: Long = 1000) {
         val fadeOut = AlphaAnimation(1f, 0f)
         fadeOut.interpolator = DecelerateInterpolator()
@@ -91,6 +111,8 @@ class Animations {
             override fun onAnimationRepeat(animation: Animation?) {}
         })
     }
+
+
     fun buttonInRightSide(imageButton: ImageButton, context: Context, duration: Long) {
 
         val screenWidth = context.resources.displayMetrics.widthPixels
@@ -106,16 +128,18 @@ class Animations {
 
     }
     fun buttonOutRightSide(imageButton: ImageButton, context: Context, duration: Long) {
-        val screenWidth = context.resources.displayMetrics.widthPixels
-        val distanceToMoveOut = 10 * context.resources.displayMetrics.density // 10 cm in dp
+        if (imageButton.visibility == View.VISIBLE) {
+            val screenWidth = context.resources.displayMetrics.widthPixels
+            val distanceToMoveOut = 10 * context.resources.displayMetrics.density // 10 cm in dp
 
-        val startOffset = 0f
-        val endOffset = screenWidth + distanceToMoveOut
+            val startOffset = 0f
+            val endOffset = screenWidth + distanceToMoveOut
 
-        val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
-        translateAnimation.duration = duration
-        imageButton.startAnimation(translateAnimation)
-        imageButton.visibility = View.INVISIBLE
+            val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
+            translateAnimation.duration = duration
+            imageButton.startAnimation(translateAnimation)
+            imageButton.visibility = View.INVISIBLE
+        }
     }
 
     fun buttonInLeftSide(imageButton: ImageButton, context: Context, duration: Long) {
@@ -152,6 +176,8 @@ fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long
         shakeAnimation.interpolator = CycleInterpolator(1f)
         shakeAnimation.start()
     }
+
+
 
     fun shakeButton(imageButton: ImageButton) {
         val shakeAnimation = ObjectAnimator.ofFloat(imageButton, "translationX", 0f, -3f, 3f, -3f, 3f, -2f, 2f, 0f)
