@@ -274,6 +274,17 @@
          app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
      <ImageView
+         android:id="@+id/cardDealingOutCardsToPlayerTenseImageView"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
+         android:layout_marginTop="52dp"
+         android:layout_marginEnd="40dp"
+         android:rotation="140"
+         android:src="@drawable/card_dark"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+
+     <ImageView
          android:id="@+id/cardPileImageView"
          android:layout_width="80dp"
          android:layout_height="100dp"
@@ -423,10 +434,14 @@
          android:id="@+id/totalBetTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:layout_marginBottom="72dp"
+         android:fontFamily="monospace"
          android:text="TextView"
+         android:textColor="#D3D3D3"
          android:textSize="24sp"
-         app:layout_constraintBottom_toTopOf="@+id/hitImageButton"
+         app:layout_constraintBottom_toBottomOf="@+id/dealImageButton"
          app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.624"
          app:layout_constraintStart_toStartOf="parent" />
 
      <TextView
@@ -434,7 +449,9 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginBottom="12dp"
+         android:fontFamily="monospace"
          android:text="TextView"
+         android:textColor="#D3D3D3"
          android:textSize="34sp"
          app:layout_constraintBottom_toTopOf="@+id/card2BlankPlayerImageView"
          app:layout_constraintStart_toEndOf="@+id/card2BlankPlayerImageView" />
@@ -443,19 +460,23 @@
          android:id="@+id/pointsDealerTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginTop="8dp"
-         android:layout_marginEnd="40dp"
+         android:layout_marginTop="184dp"
+         android:layout_marginEnd="252dp"
+         android:fontFamily="monospace"
          android:text="TextView"
+         android:textColor="#D3D3D3"
          android:textSize="34sp"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toTopOf="@+id/cardNextCardDealer" />
+         app:layout_constraintTop_toTopOf="parent" />
 
      <TextView
          android:id="@+id/playerMoneyTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginStart="48dp"
+         android:fontFamily="monospace"
          android:text="TextView"
+         android:textColor="#BCBCBC"
          android:textSize="34sp"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="parent" />

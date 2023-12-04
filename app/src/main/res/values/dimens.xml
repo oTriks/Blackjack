@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimens_xml" />
+    <dimen name="background_padding">2dp</dimen>
+    <dimen name="background_corner_radius">8dp</dimen>
+    <dimen name="background_corner_radius_more_rounded">16dp</dimen>
+    <dimen name="background_size">70dp</dimen>
+    <dimen name="background_width">70dp</dimen>
+    <dimen name="background_height">50dp</dimen>
+
+
+</resources>

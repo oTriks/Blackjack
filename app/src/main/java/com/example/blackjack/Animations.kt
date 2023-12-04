@@ -57,27 +57,29 @@ class Animations {
 
     fun fadeInImageView (imageView: ImageView) {
         val fadeIn = AlphaAnimation(0f, 1f)
-        fadeIn.duration = 1000 // Adjust the duration as needed
+        fadeIn.duration = 1000
         imageView.startAnimation(fadeIn)
         imageView.visibility = View.VISIBLE
     }
     fun fadeInImageButton (imageButton: ImageButton) {
         val fadeIn = AlphaAnimation(0f, 1f)
-        fadeIn.duration = 1000 // Adjust the duration as needed
+        fadeIn.duration = 1000
         imageButton.startAnimation(fadeIn)
         imageButton.visibility = View.VISIBLE
     }
 
     fun fadeInTextView(textView: TextView) {
+        if (textView.visibility == View.INVISIBLE) {
         val fadeIn = AlphaAnimation(0f, 1f)
-        fadeIn.duration = 1000 // Adjust the duration as needed
+        fadeIn.duration = 1000
         textView.startAnimation(fadeIn)
         textView.visibility = View.VISIBLE
+        }
     }
 
     fun fadeOutTextView(textView: TextView) {
         val fadeOut = AlphaAnimation(1f, 0f)
-        fadeOut.duration = 1000 // Adjust the duration as needed
+        fadeOut.duration = 1000
         textView.startAnimation(fadeOut)
 
         fadeOut.setAnimationListener(object : Animation.AnimationListener {
@@ -177,6 +179,12 @@ fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long
         shakeAnimation.start()
     }
 
+    fun shakeCardTense(imageView: ImageView) {
+        val shakeAnimation = ObjectAnimator.ofFloat(imageView, "translationX", 0f, -2f, 3f, -3f, 3f, -2f, 2f, 0f)
+        shakeAnimation.duration = 2000
+        shakeAnimation.interpolator = CycleInterpolator(1f)
+        shakeAnimation.start()
+    }
 
 
     fun shakeButton(imageButton: ImageButton) {
