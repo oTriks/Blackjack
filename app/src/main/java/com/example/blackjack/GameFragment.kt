@@ -445,6 +445,7 @@ fun drawCardDealer() {
                 }
             }
             Log.d("BlackJack", "Final Points Text: $pointsText")
+            Log.d("BlackJack", "Final Points Text2: $pointsText")
 
             textView.text = pointsText
         }
