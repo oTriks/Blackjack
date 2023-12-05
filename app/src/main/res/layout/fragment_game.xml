@@ -244,6 +244,39 @@
          app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
      <ImageView
+         android:id="@+id/cardNextCard2ImageView"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
+
+         android:layout_marginTop="472dp"
+         android:layout_marginEnd="152dp"
+         android:src="@drawable/card_blank"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+
+     <ImageView
+         android:id="@+id/cardNextCard3ImageView"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
+
+         android:layout_marginTop="472dp"
+         android:layout_marginEnd="152dp"
+         android:src="@drawable/card_blank"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+
+     <ImageView
+         android:id="@+id/cardNextCard4ImageView"
+         android:layout_width="70dp"
+         android:layout_height="100dp"
+
+         android:layout_marginTop="472dp"
+         android:layout_marginEnd="152dp"
+         android:src="@drawable/card_blank"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+
+     <ImageView
          android:id="@+id/cardDarkDealerImageView"
          android:layout_width="50dp"
          android:layout_height="80dp"
@@ -460,8 +493,8 @@
          android:id="@+id/pointsDealerTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginTop="184dp"
-         android:layout_marginEnd="252dp"
+         android:layout_marginTop="192dp"
+         android:layout_marginEnd="128dp"
          android:fontFamily="monospace"
          android:text="TextView"
          android:textColor="#D3D3D3"
@@ -521,6 +554,27 @@
          android:src="@drawable/sign_insurance"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+
+     <ImageView
+         android:id="@+id/cashoutImageView"
+         android:layout_width="70dp"
+         android:layout_height="70dp"
+         android:layout_marginStart="4dp"
+         android:layout_marginTop="148dp"
+         android:src="@drawable/cashout"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         />
+
+     <ImageView
+         android:id="@+id/homeImageView"
+         android:layout_width="70dp"
+         android:layout_height="70dp"
+         android:layout_marginStart="4dp"
+         android:layout_marginTop="80dp"
+         android:src="@drawable/home"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
 

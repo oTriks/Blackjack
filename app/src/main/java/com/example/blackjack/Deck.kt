@@ -14,8 +14,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 
-
-
 class Deck(private val context: Context, private val firstCardImageView: ImageView,
            private val secondCardImageView: ImageView,
            private val thirdCardImageView: ImageView,
@@ -23,9 +21,7 @@ class Deck(private val context: Context, private val firstCardImageView: ImageVi
            private val fifthCardImageView: ImageView,
            private val sixthCardImageView: ImageView) {
     var cards: MutableList<Card.PlayingCard> = mutableListOf()
-    var cardDisplay = CardDisplay()
     val handler = Handler(Looper.getMainLooper())
-//    var cardToImageViewMap: MutableMap<Card.PlayingCard, ImageView> = mutableMapOf()
 
     init {
         for (suit in Card.Suit.values()) {
@@ -80,8 +76,6 @@ fun animateCardDealingWithRotation(
             rotationEnd
         )
     }
-
-
 
         fun dealHand(playerHand: Hand, dealerHand: Hand) {
             val delayMillisSecondCard = 500L

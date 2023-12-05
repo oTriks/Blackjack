@@ -9,31 +9,11 @@ import android.widget.TextView
 class Hand {
     var cards: MutableList<Card.PlayingCard> = mutableListOf()
     var hiddenCard: Card.PlayingCard? = null
-//    fun calculatePoints(hand: List<Card.PlayingCard>): Pair<Int, Int>{
-//        var pointsWithAceAsOne   = 0
-//        var aces = 0
-//        for (card in hand) {
-//            pointsWithAceAsOne  += when (card.rank) {
-//                Card.Rank.TWO -> 2
-//                Card.Rank.THREE -> 3
-//                Card.Rank.FOUR -> 4
-//                Card.Rank.FIVE -> 5
-//                Card.Rank.SIX -> 6
-//                Card.Rank.SEVEN -> 7
-//                Card.Rank.EIGHT -> 8
-//                Card.Rank.NINE -> 9
-//                Card.Rank.TEN, Card.Rank.JACK, Card.Rank.QUEEN, Card.Rank.KING -> 10
-//                Card.Rank.ACE -> {
-//                    aces++
-//                    1
-//                }
-//                Card.Rank.HIDDEN -> 0
-//            }
-//        }
-//        val pointsWithAceAsEleven = pointsWithAceAsOne + aces * 10
-//
-//        return Pair(pointsWithAceAsOne, pointsWithAceAsEleven)
-//    }
+
+fun clear() {
+    cards.clear()
+}
+
 fun calculatePoints(hand: List<Card.PlayingCard>): Pair<Int, Int> {
     var pointsWithAceAsOne = 0
     var pointsWithAceAsEleven = 0
@@ -83,7 +63,6 @@ fun calculatePoints(hand: List<Card.PlayingCard>): Pair<Int, Int> {
                 aces++
             }
             Card.Rank.HIDDEN -> 0
-            // Add the missing ranks here
         }
     }
 
