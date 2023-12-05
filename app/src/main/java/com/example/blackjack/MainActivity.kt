@@ -1,5 +1,6 @@
 package com.example.blackjack
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
@@ -16,9 +17,8 @@ class MainActivity : AppCompatActivity() {
             transaction.commit()
         }
         highscoreButton.setOnClickListener {
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.insuranceImageView, GameFragment())
-            transaction.commit()
+            val intent = Intent(this, HighscoreActivity::class.java)
+            startActivity(intent)
         }
 
     }

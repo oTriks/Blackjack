@@ -16,4 +16,5 @@ class BannerManager (private val animations: Animations) {
             animations.fadeOutImageView(imageView)
         }, delayMillisShowBannerFor)
         }
+
 }

@@ -201,16 +201,6 @@ fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long
     }
 
 
-    fun moveImageViewUp (imageView: ImageView) {
-        val distanceToMoveUp = -130f
-
-        val moveUp = TranslateAnimation(0f, 0f, 0f, distanceToMoveUp)
-        moveUp.duration = 1000
-
-        moveUp.fillAfter = true
-        imageView.startAnimation(moveUp)
-    }
-
     fun fadeInAndMoveUpImageView(imageView: ImageView) {
         val fadeIn = AlphaAnimation(0f, 1f)
         fadeIn.duration = 1000
@@ -230,10 +220,6 @@ fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long
 
 
 
-
-
-
-
     fun removeImage (imageView: ImageView) {
         val scaleAnimation = ScaleAnimation(
             1f, 1f, // X-axis scaling from 1 to 1 (no change)
@@ -245,17 +231,13 @@ fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long
 
         val moveUp = TranslateAnimation(0f, 0f, 0f, -imageView.height.toFloat())
         moveUp.duration = 500 // Adjust the duration as needed
-
-        // Combine both animations into an AnimationSet
         val animationSet = AnimationSet(true)
         animationSet.addAnimation(scaleAnimation)
         animationSet.addAnimation(moveUp)
 
-        // Ensure the image stays invisible after the animation
         animationSet.fillAfter = true
 
         imageView.startAnimation(animationSet)
-
 
         animationSet.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
@@ -266,43 +248,6 @@ fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long
             override fun onAnimationRepeat(animation: Animation?) {}
         })
     }
-fun removeImageButton (imageButton: ImageButton) {
-    val scaleAnimation = ScaleAnimation(
-        1f, 1f, // X-axis scaling from 1 to 1 (no change)
-        1f, 0f, // Y-axis scaling from 1 to 0 (shrinking vertically)
-        Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point: X-axis center
-        Animation.RELATIVE_TO_SELF, 0.5f  // Pivot point: Y-axis center
-    )
-    scaleAnimation.duration = 500 // Adjust the duration as needed
-
-    val moveUp = TranslateAnimation(0f, 0f, 0f, -imageButton.height.toFloat())
-    moveUp.duration = 500 // Adjust the duration as needed
-
-    // Combine both animations into an AnimationSet
-    val animationSet = AnimationSet(true)
-    animationSet.addAnimation(scaleAnimation)
-    animationSet.addAnimation(moveUp)
-
-    // Ensure the image stays invisible after the animation
-    animationSet.fillAfter = true
-
-    imageButton.startAnimation(animationSet)
-
-
-    animationSet.setAnimationListener(object : Animation.AnimationListener {
-        override fun onAnimationStart(animation: Animation?) {}
-
-        override fun onAnimationEnd(animation: Animation?) {
-            imageButton.visibility = View.INVISIBLE
-        }
-        override fun onAnimationRepeat(animation: Animation?) {}
-    })
-}
-
-
-
-
-
 
 
 }
