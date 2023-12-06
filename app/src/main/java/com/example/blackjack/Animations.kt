@@ -149,7 +149,7 @@ class Animations {
     fun buttonInRightSide(imageButton: ImageButton, context: Context, duration: Long) {
         if (imageButton.visibility == View.INVISIBLE) {
             val screenWidth = context.resources.displayMetrics.widthPixels
-            val distanceToMoveIn = 10 * context.resources.displayMetrics.density // 10 cm in dp
+            val distanceToMoveIn = 10 * context.resources.displayMetrics.density
 
             val startOffset = screenWidth + distanceToMoveIn
             val endOffset = 0f
@@ -163,7 +163,7 @@ class Animations {
     fun buttonOutRightSide(imageButton: ImageButton, context: Context, duration: Long) {
         if (imageButton.visibility == View.VISIBLE) {
             val screenWidth = context.resources.displayMetrics.widthPixels
-            val distanceToMoveOut = 10 * context.resources.displayMetrics.density // 10 cm in dp
+            val distanceToMoveOut = 10 * context.resources.displayMetrics.density
 
             val startOffset = 0f
             val endOffset = screenWidth + distanceToMoveOut
@@ -176,9 +176,9 @@ class Animations {
     }
 
     fun buttonInLeftSide(imageButton: ImageButton, context: Context, duration: Long) {
-        if (imageButton.visibility == View.VISIBLE) {
+        if (imageButton.visibility == View.INVISIBLE) {
             val screenWidth = context.resources.displayMetrics.widthPixels
-            val distanceToMoveIn = 10 * context.resources.displayMetrics.density // 10 cm in dp
+            val distanceToMoveIn = 10 * context.resources.displayMetrics.density
 
             val startOffset = -(screenWidth + distanceToMoveIn)
             val endOffset = 0f
@@ -191,17 +191,18 @@ class Animations {
     }
 
 fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long) {
-    val screenWidth = context.resources.displayMetrics.widthPixels
-    val distanceToMoveOut = 10 * context.resources.displayMetrics.density // 10 cm in dp
+    if (imageButton.visibility == View.VISIBLE) {
+        val screenWidth = context.resources.displayMetrics.widthPixels
+        val distanceToMoveOut = 10 * context.resources.displayMetrics.density
 
-    val startOffset = 0f
-    val endOffset = -screenWidth - distanceToMoveOut // Adjusted for moving out to the left
+        val startOffset = 0f
+        val endOffset = -screenWidth - distanceToMoveOut
 
-    val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
-    translateAnimation.duration = duration
-    imageButton.startAnimation(translateAnimation)
-    imageButton.visibility = View.INVISIBLE
-
+        val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
+        translateAnimation.duration = duration
+        imageButton.startAnimation(translateAnimation)
+        imageButton.visibility = View.INVISIBLE
+    }
 }
 
 
