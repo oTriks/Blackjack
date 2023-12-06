@@ -26,9 +26,13 @@ class DelaysUtil {
         val flipDealerCard = 500L
         val bust = 1000L
         val cashOutMoney = 2000L
-        val dealerCards = 5000L
+        val invisbleCards = 3000L
         val secondCard = 500L
         val thirdCard = 1000L
         val forthCard = 1500L
+        val removeMarkers = 500L
+        val gameStart = 1000L
+        val reset = 4000L
+        val activateMarkers = 4000L
     }
 }

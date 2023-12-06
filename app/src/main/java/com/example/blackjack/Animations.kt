@@ -42,6 +42,21 @@ class Animations {
         animatorY.start()
     }
 
+    fun animateCardToPile(cardImageView: ImageView, cardPile: ImageView, index: Int, context: Context) {
+        val cardPileX = cardPile.x
+        val cardPileY = cardPile.y
+        moveObject(
+            cardImageView,
+            cardImageView.x,
+            cardImageView.y,
+            cardPileX,
+            cardPileY,
+            500L,
+            index * 200L
+        )
+        cardImageView.setImageResource(context.resources.getIdentifier("card_dark", "drawable", context.packageName))
+    }
+
     fun flipCard(cardImageView: ImageView) {
         val animator1 = ObjectAnimator.ofFloat(cardImageView, View.ROTATION_Y, 0f, 180f)
         animator1.duration = 500
@@ -75,26 +90,45 @@ class Animations {
     }
 
     fun fadeOutTextView(textView: TextView) {
-        val fadeOut = AlphaAnimation(1f, 0f)
-        fadeOut.duration = 1000
-        textView.startAnimation(fadeOut)
+        if (textView.visibility == View.VISIBLE) {
+            val fadeOut = AlphaAnimation(1f, 0f)
+            fadeOut.duration = 1000
+            textView.startAnimation(fadeOut)
 
-        fadeOut.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                // Optional: Code to run when animation starts
-            }
+            fadeOut.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                    // Optional: Code to run when animation starts
+                }
 
-            override fun onAnimationEnd(animation: Animation?) {
-                textView.visibility = View.INVISIBLE // or View.GONE
-            }
+                override fun onAnimationEnd(animation: Animation?) {
+                    textView.visibility = View.INVISIBLE // or View.GONE
+                }
 
-            override fun onAnimationRepeat(animation: Animation?) {
-                // Optional: Code to run when animation repeats
-            }
-        })
+                override fun onAnimationRepeat(animation: Animation?) {
+                    // Optional: Code to run when animation repeats
+                }
+            })
+        }
     }
 
     fun fadeOutImageView(imageView: ImageView, duration: Long = 1000) {
+        val fadeOut = AlphaAnimation(1f, 0f)
+        fadeOut.interpolator = DecelerateInterpolator()
+        fadeOut.duration = duration
+
+        val animationSet = AnimationSet(false)
+        animationSet.addAnimation(fadeOut)
+        imageView.startAnimation(animationSet)
+        animationSet.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                imageView.visibility = View.INVISIBLE
+            }
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+    }
+
+    fun fadeOutMarkersImageView(imageView: ImageView, duration: Long = 200) {
         val fadeOut = AlphaAnimation(1f, 0f)
         fadeOut.interpolator = DecelerateInterpolator()
         fadeOut.duration = duration
@@ -142,16 +176,18 @@ class Animations {
     }
 
     fun buttonInLeftSide(imageButton: ImageButton, context: Context, duration: Long) {
-        val screenWidth = context.resources.displayMetrics.widthPixels
-        val distanceToMoveIn = 10 * context.resources.displayMetrics.density // 10 cm in dp
+        if (imageButton.visibility == View.VISIBLE) {
+            val screenWidth = context.resources.displayMetrics.widthPixels
+            val distanceToMoveIn = 10 * context.resources.displayMetrics.density // 10 cm in dp
 
-        val startOffset = -(screenWidth + distanceToMoveIn)
-        val endOffset = 0f
+            val startOffset = -(screenWidth + distanceToMoveIn)
+            val endOffset = 0f
 
-        val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
-        translateAnimation.duration = duration
-        imageButton.startAnimation(translateAnimation)
-        imageButton.visibility = View.VISIBLE
+            val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
+            translateAnimation.duration = duration
+            imageButton.startAnimation(translateAnimation)
+            imageButton.visibility = View.VISIBLE
+        }
     }
 
 fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long) {
