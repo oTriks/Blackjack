@@ -19,7 +19,14 @@ class Deck(private val context: Context, private val firstCardImageView: ImageVi
            private val thirdCardImageView: ImageView,
            private val fourthCardImageView: ImageView,
            private val fifthCardImageView: ImageView,
-           private val sixthCardImageView: ImageView) {
+           private val sixthCardImageView: ImageView,
+           private val cardDisplay: CardDisplay,
+           private val constraintlayout: ConstraintLayout,
+           private val widthPx: Int,
+           private val heightPx: Int,
+           private val cardList: MutableList<ImageView>
+
+    ) {
     var cards: MutableList<Card.PlayingCard> = mutableListOf()
     val handler = Handler(Looper.getMainLooper())
 
@@ -76,21 +83,78 @@ fun animateCardDealingWithRotation(
             rotationEnd
         )
     }
+    fun dealCard(
+        hand: Hand,
+        startX: Float,
+        startY: Float,
+        endX: Float,
+        endY: Float,
+        rotationStart: Float,
+        rotationEnd: Float,
+        delay: Long
+    ) {
+        val card = cards.random()
+        hand.cards.add(card)
+        cards.remove(card)
+
+        val cardImageView = ImageView(context).apply {
+            visibility = View.VISIBLE
+            setImageResource(cardDisplay.getCardImage(card))
+            id = View.generateViewId()
+        }
+        val params = ConstraintLayout.LayoutParams(widthPx, heightPx)
+        cardList.add(cardImageView)
+        cardImageView.layoutParams = params
+        constraintlayout.addView(cardImageView)
+
+        handler.postDelayed({
+            performDealingAnimation(cardImageView, startX, startY, endX, endY, rotationStart, rotationEnd)
+            cardImageView.visibility = View.VISIBLE
+        }, delay)
+    }
+
+
+
+
 
         fun dealHand(playerHand: Hand, dealerHand: Hand) {
             val delayMillisSecondCard = 500L
             val delayMillisThirdCard = 1000L
             val delayMillisForthCard = 1500L
-//        var card = cards.random()
-            var card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.ACE)
+
+            var card = cards.random()
             playerHand.cards.add(card)
-        cards.remove(card)
-            performDealingAnimation(firstCardImageView, secondCardImageView.x, secondCardImageView.y, firstCardImageView.x, firstCardImageView.y, 0f, 180f)
-            firstCardImageView.visibility = View.VISIBLE
+            cards.remove(card)
+
+            val cardImageView = ImageView(context).apply {
+                visibility = View.VISIBLE
+                setImageResource(cardDisplay.getCardImage(card))
+                id = View.generateViewId()
+            }
+            val constraintLayout = constraintlayout
+            val params = ConstraintLayout.LayoutParams(widthPx, heightPx)
+            cardList.add(cardImageView)
+            cardImageView.setLayoutParams(params)
+            constraintLayout.addView(cardImageView)
+
+            performDealingAnimation(cardImageView, secondCardImageView.x, secondCardImageView.y, firstCardImageView.x, firstCardImageView.y, 0f, 180f)
+
+            cardImageView.visibility = View.VISIBLE
 
 
-//            card = cards.random()
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO)
+
+
+
+            //            var card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.ACE)
+//        var card = cards.random()
+//            playerHand.cards.add(card)
+//        cards.remove(card)
+//            performDealingAnimation(firstCardImageView, secondCardImageView.x, secondCardImageView.y, firstCardImageView.x, firstCardImageView.y, 0f, 180f)
+//            firstCardImageView.visibility = View.VISIBLE
+
+
+            card = cards.random()
+//            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO)
         dealerHand.cards.add(card)
         cards.remove(card)
             handler.postDelayed({
@@ -98,8 +162,8 @@ fun animateCardDealingWithRotation(
                 thirdCardImageView.visibility = View.VISIBLE
             }, delayMillisSecondCard)
 
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
-//            card = cards.random()
+//            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
+            card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
                 handler.postDelayed({
@@ -107,8 +171,8 @@ fun animateCardDealingWithRotation(
                     fifthCardImageView.visibility = View.VISIBLE
                 }, delayMillisThirdCard)
 
-            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO)
-//            card = cards.random()
+//            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO)
+            card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
             handler.postDelayed({
