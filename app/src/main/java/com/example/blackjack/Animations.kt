@@ -20,7 +20,7 @@ import android.widget.TextView
 
 class Animations {
 
-    fun moveCard(
+    fun moveObject(
         cardImageView: ImageView,
         startX: Float,
         startY: Float,
@@ -41,9 +41,6 @@ class Animations {
         animatorY.startDelay = delay
         animatorY.start()
     }
-
-
-
 
     fun flipCard(cardImageView: ImageView) {
         val animator1 = ObjectAnimator.ofFloat(cardImageView, View.ROTATION_Y, 0f, 180f)

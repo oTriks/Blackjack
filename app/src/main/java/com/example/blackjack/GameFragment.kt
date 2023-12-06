@@ -6,15 +6,11 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.transition.ChangeBounds
 import android.util.Log
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,9 +20,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.ColorRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import com.example.blackjack.DelaysUtil.Companion.bannerShow
 import com.example.blackjack.DelaysUtil.Companion.blackjackDealer
 import com.example.blackjack.DelaysUtil.Companion.blackjackPlayerBanner
@@ -56,11 +50,13 @@ import com.example.blackjack.DelaysUtil.Companion.toPile
 class GameFragment : Fragment() {
     val dealerHand = Hand()
 
-    data class BetInfo( val marker: ImageView,
-                        val madeBetMarker: ImageView,
-                        var count: Int,
-                        val value: Int
+    data class BetInfo(
+        val marker: ImageView,
+        val madeBetMarker: ImageView,
+        var count: Int,
+        val value: Int
     )
+
     data class ImageViewPosition(val x: Float, val y: Float)
 
 
@@ -74,7 +70,6 @@ class GameFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("BlackJack", "onCreateView called")
 
         val view = inflater.inflate(R.layout.fragment_game, container, false)
         val marker5 = view.findViewById<ImageView>(R.id.marker5ImageView)
@@ -132,74 +127,64 @@ class GameFragment : Fragment() {
         val homeButton = view.findViewById<ImageView>(R.id.homeImageView)
         val cashoutButton = view.findViewById<ImageView>(R.id.cashoutImageView)
 
+        val viewsToHide = arrayOf(
+            cardBlankDealer,
+            cardNextCardDealer,
+            cardDarkDealer,
+            cardDealingOutCardsToDealer,
+            cardDealingOutCardsToPlayer,
+            cardDealingOutCardsToPlayerTense,
+            card1BlankPlayer,
+            card2BlankPlayer,
+            cardNextCard,
+            cardNextCard2,
+            cardNextCard3,
+            cardNextCard4,
+            cardPile,
+            totalBetText,
+            madeBetMarker5,
+            madeBetMarker10,
+            madeBetMarker25,
+            madeBetMarker50,
+            madeBetMarker100,
+            markersWinnerDealer,
+            markersWinnerPlayer,
+            hit,
+            stand,
+            deal,
+            split,
+            doubleDown,
+            repeatBet,
+            insurance,
+            yes,
+            no,
+            bannerWin,
+            bannerLose,
+            bannerBust,
+            bannerBlackjack,
+            bannerSplit,
+            bannerBlackjackPlayerSplit,
+            bannerBlackjackDealerSplit,
+            pointsPlayerText,
+            pointsDealerText,
+            homeButton,
+            cashoutButton
+        )
+        for (view in viewsToHide) {
+            view.visibility = View.INVISIBLE
+        }
 
-        cardBlankDealer.visibility = View.INVISIBLE
-        cardNextCardDealer.visibility = View.INVISIBLE
-        cardDarkDealer.visibility = View.INVISIBLE
-        cardDealingOutCardsToDealer.visibility = View.INVISIBLE
-        cardDealingOutCardsToPlayer.visibility = View.INVISIBLE
-        cardDealingOutCardsToPlayerTense.visibility = View.INVISIBLE
-        card1BlankPlayer.visibility = View.INVISIBLE
-        card2BlankPlayer.visibility = View.INVISIBLE
-        cardNextCard.visibility = View.INVISIBLE
-        cardNextCard2.visibility = View.INVISIBLE
-        cardNextCard3.visibility = View.INVISIBLE
-        cardNextCard4.visibility = View.INVISIBLE
 
-        cardPile.visibility = View.INVISIBLE
-        totalBetText.visibility = View.INVISIBLE
-        madeBetMarker5.visibility = View.INVISIBLE
-        madeBetMarker10.visibility = View.INVISIBLE
-        madeBetMarker25.visibility = View.INVISIBLE
-        madeBetMarker50.visibility = View.INVISIBLE
-        madeBetMarker100.visibility = View.INVISIBLE
-        markersWinnerDealer.visibility = View.INVISIBLE
-        markersWinnerPlayer.visibility = View.INVISIBLE
-        hit.visibility = View.INVISIBLE
-        stand.visibility = View.INVISIBLE
-        deal.visibility = View.INVISIBLE
-        split.visibility = View.INVISIBLE
-        doubleDown.visibility = View.INVISIBLE
-        repeatBet.visibility = View.INVISIBLE
-        insurance.visibility = View.INVISIBLE
-        yes.visibility = View.INVISIBLE
-        no.visibility = View.INVISIBLE
-        bannerWin.visibility = View.INVISIBLE
-        bannerLose.visibility = View.INVISIBLE
-        bannerBust.visibility = View.INVISIBLE
-        bannerBlackjack.visibility = View.INVISIBLE
-        bannerSplit.visibility = View.INVISIBLE
-        bannerBlackjackPlayerSplit.visibility = View.INVISIBLE
-        bannerBlackjackDealerSplit.visibility = View.INVISIBLE
-        pointsPlayerText.visibility = View.INVISIBLE
-        pointsDealerText.visibility = View.INVISIBLE
-        homeButton.visibility = View.INVISIBLE
-        cashoutButton.visibility = View.INVISIBLE
-
-        val TAG = "GameFragment"
         var totalBet = 0
         var highscore = 0
         val playerCardImageViews: MutableList<ImageView> =
-            mutableListOf(
-                card1BlankPlayer,
-                card2BlankPlayer,
-                cardNextCard,
-            )
+            mutableListOf(card1BlankPlayer, card2BlankPlayer, cardNextCard)
         val dealerCardImageViews: MutableList<ImageView> =
             mutableListOf(cardBlankDealer, cardDarkDealer, cardNextCardDealer)
         val cardDisplay = CardDisplay()
         val playerHand = Hand()
         val dealerHand = Hand()
         val util = Util()
-//        val hand = Hand()
-//        val widthPx = 70   // BYT ??
-//        val heightPx = 100  // BYT ??
-        val widthDp = 70f // bredden i dp
-        val heightDp = 100f // höjden i dp
-        val density = resources.displayMetrics.density
-        val widthPx = (widthDp * density).toInt() // bredden i pixlar
-        val heightPx = (heightDp * density).toInt() // höjden i pixlar
-//        val cardList = mutableListOf<ImageView>()  // ???
 
         val deck = Deck(
             requireContext(),
@@ -209,22 +194,18 @@ class GameFragment : Fragment() {
             cardDealingOutCardsToDealer,
             card2BlankPlayer,
             cardDarkDealer,
-            cardDisplay,
-            constraintlayout,
-            widthPx,
-            heightPx,
-            playerCardImageViews
         )
         val animations = Animations()
         val bannerManager = BannerManager(animations)
         var lastBetMarkersValue = mutableListOf<Int>()
+        val cardImageViews = deck.cardImageViews
 
         var lastBet = 0
         var winner = ""
-         var wins: Int = 0
-         var losses: Int = 0
-         var blackjacks: Int = 0
-         var gamesPlayed: Int = 0
+        var wins: Int = 0
+        var losses: Int = 0
+        var blackjacks: Int = 0
+        var gamesPlayed: Int = 0
         var draws: Int = 0
         var totalBetCost = 0
 
@@ -242,7 +223,8 @@ class GameFragment : Fragment() {
         val originalPositionsMarkers = hashMapOf<ImageView, Pair<Float, Float>>()
         fun saveOriginalPositionMarkers(imageView: ImageView) {
             val viewTreeObserver = imageView.viewTreeObserver
-            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            viewTreeObserver.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         imageView.viewTreeObserver.removeGlobalOnLayoutListener(this)
@@ -258,6 +240,8 @@ class GameFragment : Fragment() {
         saveOriginalPositionMarkers(madeBetMarker25)
         saveOriginalPositionMarkers(madeBetMarker50)
         saveOriginalPositionMarkers(madeBetMarker100)
+
+
         fun resetCardPositionsMarkers() {
             originalPositionsMarkers.forEach { (imageView, position) ->
                 imageView.x = position.first
@@ -265,12 +249,12 @@ class GameFragment : Fragment() {
             }
         }
 
-
         val originalPositionsCards = hashMapOf<ImageView, Pair<Float, Float>>()
 
         fun saveOriginalPositionCards(imageView: ImageView) {
             val viewTreeObserver = imageView.viewTreeObserver
-            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            viewTreeObserver.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         imageView.viewTreeObserver.removeGlobalOnLayoutListener(this)
@@ -303,11 +287,10 @@ class GameFragment : Fragment() {
 //        }
 
 
-
         fun animateCardToPile(cardImageView: ImageView, cardPile: ImageView, index: Int) {
             val cardPileX = cardPile.x
             val cardPileY = cardPile.y
-            animations.moveCard(
+            animations.moveObject(
                 cardImageView,
                 cardImageView.x,
                 cardImageView.y,
@@ -323,11 +306,9 @@ class GameFragment : Fragment() {
             dealerCardImageViews.forEachIndexed { index, cardImageView ->
                 animateCardToPile(cardImageView, cardPile, index)
             }
-//            handler.postDelayed({
             cardImageViews.forEachIndexed { index, cardImageView ->
                 animateCardToPile(cardImageView, cardPile, index)
             }
-//            }, dealerCards)  // ha dealerns kort lägst?
 
         }
 
@@ -349,7 +330,14 @@ class GameFragment : Fragment() {
                 animations.buttonInRightSide(repeatBet, requireContext(), 1000L)
             }, repeatBetButton)
             Handler().postDelayed({
-            Log.d("CardPositions", "after animated cards to pile position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}")
+                dealerCardImageViews.forEachIndexed { index, cardImageView ->  // ?!??!
+                    cardImageView.visibility = View.INVISIBLE
+
+                }
+                cardImageViews.forEachIndexed { index, cardImageView ->  // ?!??!
+                    cardImageView.visibility = View.INVISIBLE
+
+                }
             }, dealerCards)
         }
 
@@ -364,13 +352,12 @@ class GameFragment : Fragment() {
             emptyBoard()
             gamesPlayed++
             Handler().postDelayed({
-            animations.fadeInImageView(cashoutButton)
+                animations.fadeInImageView(cashoutButton)
             }, cashOutMoney)
         }
 
 
         fun updateDealerCards(dealerHand: Hand) {
-            Log.d(TAG, "Entering someMethod()")
             dealerHand.cards.forEachIndexed { i, card ->
                 val imageView: ImageView
                 if (i < dealerCardImageViews.size) {
@@ -385,7 +372,6 @@ class GameFragment : Fragment() {
         }
 
         fun compareHands(playerPoints: Int, dealerPoints: Int): String {
-            Log.d(TAG, "Entering someMethod()")
             return when {
                 playerPoints > 21 -> "Dealer"
                 dealerPoints > 21 -> "Player"
@@ -396,7 +382,6 @@ class GameFragment : Fragment() {
         }
 
         fun flipCard(imageView: ImageView, hand: Hand) {
-            Log.d(TAG, "Entering someMethod()")
             animations.flipCard(imageView)
             Handler().postDelayed({
                 updateDealerCards(hand)
@@ -405,7 +390,6 @@ class GameFragment : Fragment() {
         }
 
         fun flipCardTense(imageView: ImageView, hand: Hand) {
-            Log.d(TAG, "Entering someMethod()")
             Handler().postDelayed({
                 animations.shakeCardSubtle(cardDarkDealer)
             }, shakeCard)
@@ -418,7 +402,18 @@ class GameFragment : Fragment() {
         var dealerDrawCounter = 0
         var playerHitCounter = 0
 
-        fun drawFirstCard(hand: Hand, previousCard: ImageView, offsetDp: Float, widthDp: Float, heightDp: Float, dealingOutCards: ImageView, card1: ImageView, card2: ImageView, counter: Int, cardList: MutableList<ImageView>): Int {
+        fun drawFirstCard(
+            hand: Hand,
+            previousCard: ImageView,
+            offsetDp: Float,
+            widthDp: Float,
+            heightDp: Float,
+            dealingOutCards: ImageView,
+            card1: ImageView,
+            card2: ImageView,
+            counter: Int,
+            cardList: MutableList<ImageView>
+        ): Int {
             deck.drawCard(hand.cards)
             val newCard = hand.cards.last()
             val image = cardDisplay.getCardImage(newCard)
@@ -492,7 +487,16 @@ class GameFragment : Fragment() {
         }
 
 
-        fun drawCard(hand: Hand, previousCard: ImageView, offsetDp: Float, widthDp: Float, heightDp: Float, dealingOutCards: ImageView, counter: Int, cardList: MutableList<ImageView>): Int {
+        fun drawCard(
+            hand: Hand,
+            previousCard: ImageView,
+            offsetDp: Float,
+            widthDp: Float,
+            heightDp: Float,
+            dealingOutCards: ImageView,
+            counter: Int,
+            cardList: MutableList<ImageView>
+        ): Int {
             deck.drawCard(hand.cards)
             val newCard = hand.cards.last()
             val image = cardDisplay.getCardImage(newCard)
@@ -523,23 +527,42 @@ class GameFragment : Fragment() {
                 0f,
                 180f
             )
-            return counter +1
+            return counter + 1
         }
 
         fun drawCardDealer() {
             if (dealerDrawCounter == 0) {
-                dealerDrawCounter = drawFirstCard(dealerHand, cardDarkDealer, 15f, 50f, 70f, cardDealingOutCardsToDealer, cardBlankDealer, cardDarkDealer, dealerDrawCounter, dealerCardImageViews)
-            }else if (dealerDrawCounter > 0){
-                dealerDrawCounter = drawCard(dealerHand,cardDarkDealer, 15f + (15f * dealerDrawCounter), 50f, 70f, cardDealingOutCardsToDealer, dealerDrawCounter, dealerCardImageViews)
+                dealerDrawCounter = drawFirstCard(
+                    dealerHand,
+                    cardDarkDealer,
+                    15f,
+                    50f,
+                    70f,
+                    cardDealingOutCardsToDealer,
+                    cardBlankDealer,
+                    cardDarkDealer,
+                    dealerDrawCounter,
+                    dealerCardImageViews
+                )
+            } else if (dealerDrawCounter > 0) {
+                dealerDrawCounter = drawCard(
+                    dealerHand,
+                    cardDarkDealer,
+                    15f + (15f * dealerDrawCounter),
+                    50f,
+                    70f,
+                    cardDealingOutCardsToDealer,
+                    dealerDrawCounter,
+                    dealerCardImageViews
+                )
             }
         }
 
         fun animateMarkersToWinner(winnerIsDealer: Boolean) {
-            Log.d(TAG, "Entering someMethod()")
             val destinationX = if (winnerIsDealer) markersWinnerDealer.x else markersWinnerPlayer.x
             val destinationY = if (winnerIsDealer) markersWinnerDealer.y else markersWinnerPlayer.y
             for ((marker, betInfo) in selectedMarkers) {
-                animations.moveCard(
+                animations.moveObject(
                     betInfo.madeBetMarker,
                     betInfo.madeBetMarker.x,
                     betInfo.madeBetMarker.y,
@@ -552,9 +575,7 @@ class GameFragment : Fragment() {
         }
 
 
-
         fun cashOut() {
-            Log.d(TAG, "Entering someMethod()")
             val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
             editor.putInt("playerMoney", playerMoney)
@@ -570,7 +591,7 @@ class GameFragment : Fragment() {
         }
 
         cashoutButton.setOnClickListener {
-        cashOut()
+            cashOut()
         }
         homeButton.setOnClickListener {
             val intent = Intent(requireContext(), MainActivity::class.java)
@@ -578,8 +599,6 @@ class GameFragment : Fragment() {
         }
 
         fun determineWinner(playerHand: Hand, dealerHand: Hand) {
-            Log.d(TAG, "Entering someMethod()")
-            Log.d("BlackJack", "Entering determineWinner")
             val playerPoints = playerHand.calculatePoints(playerHand.cards)
             val winner =
                 compareHands(playerPoints.first, dealerHand.calculatePoints(dealerHand.cards).first)
@@ -653,8 +672,6 @@ class GameFragment : Fragment() {
         }
 
 
-
-
         fun checKDealerPoints(dealerHand: Hand, dealerPointsText: TextView) {
             val (pointsWithAceAsOne, pointsWithAceAsEleven) = dealerHand.calculatePoints(dealerHand.cards)
             when {
@@ -693,19 +710,21 @@ class GameFragment : Fragment() {
             dealButton: ImageButton,
         ) {
 
-            val betInfo = selectedMarkers.getOrDefault(marker, BetInfo(marker, madeBetMarker, 0, value)).apply {
-        count++
-    }
-                 selectedMarkers[marker] = betInfo
+            val betInfo =
+                selectedMarkers.getOrDefault(marker, BetInfo(marker, madeBetMarker, 0, value))
+                    .apply {
+                        count++
+                    }
+            selectedMarkers[marker] = betInfo
 
-                marker.setOnClickListener {
-                    selectedBets.add(betInfo)
-                    lastBetMarkersValue.add(value)
+            marker.setOnClickListener {
+                selectedBets.add(betInfo)
+                lastBetMarkersValue.add(value)
                 madeBetMarker.visibility = View.VISIBLE
                 animations.fadeInTextView(totalBetText)
                 lastBet = lastBetMarkersValue.sum()
 
-                animations.moveCard(
+                animations.moveObject(
                     madeBetMarker,
                     marker.x,
                     marker.y,
@@ -814,7 +833,7 @@ class GameFragment : Fragment() {
             totalBet = lastBetMarkersValue.sum() * 2
             totalBetText.text = totalBet.toString()
             for ((marker, betInfo) in selectedMarkers) {  // gör liknande för insurance
-                animations.moveCard(
+                animations.moveObject(
                     betInfo.madeBetMarker,
                     marker.x,
                     marker.y,
@@ -958,11 +977,6 @@ class GameFragment : Fragment() {
         }
 
 
-
-
-
-
-
 //            playerHand.clear()
 //            dealerHand.clear()
 //            hitCounter = 0
@@ -972,15 +986,38 @@ class GameFragment : Fragment() {
 //                betInfo.madeBetMarker.visibility = View.INVISIBLE
 
         hit.setOnClickListener {
-            Log.d("CardPositions", "took a card position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}")
+            Log.d(
+                "CardPositions",
+                "took a card position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}"
+            )
 
             animations.shakeButton(hit)
             if (playerHitCounter == 0) {
                 animations.buttonOutLeftSide(doubleDown, requireContext(), 1000L)
-                playerHitCounter = drawFirstCard(playerHand, card2BlankPlayer, 35f, 70f, 100f, cardDealingOutCardsToPlayer, card1BlankPlayer, card2BlankPlayer, playerHitCounter, playerCardImageViews)
-            }else if (playerHitCounter > 0){
-                playerHitCounter = drawCard(playerHand, card2BlankPlayer, 35f + (35f * playerHitCounter), 70f, 100f, cardDealingOutCardsToPlayer, playerHitCounter, playerCardImageViews)
-                }
+                playerHitCounter = drawFirstCard(
+                    playerHand,
+                    card2BlankPlayer,
+                    35f,
+                    70f,
+                    100f,
+                    cardDealingOutCardsToPlayer,
+                    card1BlankPlayer,
+                    card2BlankPlayer,
+                    playerHitCounter,
+                    playerCardImageViews
+                )
+            } else if (playerHitCounter > 0) {
+                playerHitCounter = drawCard(
+                    playerHand,
+                    card2BlankPlayer,
+                    35f + (35f * playerHitCounter),
+                    70f,
+                    100f,
+                    cardDealingOutCardsToPlayer,
+                    playerHitCounter,
+                    playerCardImageViews
+                )
+            }
 
 
             animations.shakeTextSubtle(pointsPlayerText)
@@ -1020,7 +1057,10 @@ class GameFragment : Fragment() {
 
 
         stand.setOnClickListener {
-            Log.d("CardPositions", "stand position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}")
+            Log.d(
+                "CardPositions",
+                "stand position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}"
+            )
 
             dealerHand.updatePointsText(pointsDealerText, false)
             playerHand.updatePointsText(pointsPlayerText, true)
@@ -1056,9 +1096,10 @@ class GameFragment : Fragment() {
         }
 
 
-
         repeatBet.setOnClickListener {
             animations.buttonOutRightSide(repeatBet, requireContext(), 1000L)
+            card1BlankPlayer.visibility = View.INVISIBLE
+            card2BlankPlayer.visibility = View.INVISIBLE
 
             resetCardPositionsCards()
             resetCardPositionsMarkers()
@@ -1071,7 +1112,7 @@ class GameFragment : Fragment() {
                 betInfo.count++
                 totalBetCost += betInfo.count * betInfo.value
 
-                animations.moveCard(
+                animations.moveObject(
                     betInfo.madeBetMarker,
                     betInfo.marker.x,
                     betInfo.marker.y,

@@ -27,6 +27,8 @@ class DelaysUtil {
         val bust = 1000L
         val cashOutMoney = 2000L
         val dealerCards = 5000L
-
+        val secondCard = 500L
+        val thirdCard = 1000L
+        val forthCard = 1500L
     }
 }
