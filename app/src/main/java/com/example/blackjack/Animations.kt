@@ -116,18 +116,18 @@ class Animations {
 
 
     fun buttonInRightSide(imageButton: ImageButton, context: Context, duration: Long) {
+        if (imageButton.visibility == View.INVISIBLE) {
+            val screenWidth = context.resources.displayMetrics.widthPixels
+            val distanceToMoveIn = 10 * context.resources.displayMetrics.density // 10 cm in dp
 
-        val screenWidth = context.resources.displayMetrics.widthPixels
-        val distanceToMoveIn = 10 * context.resources.displayMetrics.density // 10 cm in dp
+            val startOffset = screenWidth + distanceToMoveIn
+            val endOffset = 0f
 
-        val startOffset = screenWidth + distanceToMoveIn
-        val endOffset = 0f
-
-        val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
-        translateAnimation.duration = duration
-        imageButton.startAnimation(translateAnimation)
-        imageButton.visibility = View.VISIBLE
-
+            val translateAnimation = TranslateAnimation(startOffset, endOffset, 0f, 0f)
+            translateAnimation.duration = duration
+            imageButton.startAnimation(translateAnimation)
+            imageButton.visibility = View.VISIBLE
+        }
     }
     fun buttonOutRightSide(imageButton: ImageButton, context: Context, duration: Long) {
         if (imageButton.visibility == View.VISIBLE) {

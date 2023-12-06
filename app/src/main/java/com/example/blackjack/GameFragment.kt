@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.media.Image
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,6 +27,31 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import com.example.blackjack.DelaysUtil.Companion.bannerShow
+import com.example.blackjack.DelaysUtil.Companion.blackjackDealer
+import com.example.blackjack.DelaysUtil.Companion.blackjackPlayerBanner
+import com.example.blackjack.DelaysUtil.Companion.bust
+import com.example.blackjack.DelaysUtil.Companion.buttonsContinue
+import com.example.blackjack.DelaysUtil.Companion.cardsToPile
+import com.example.blackjack.DelaysUtil.Companion.cashOutMoney
+import com.example.blackjack.DelaysUtil.Companion.checkDealer
+import com.example.blackjack.DelaysUtil.Companion.checkDealersCards
+import com.example.blackjack.DelaysUtil.Companion.dealerCards
+import com.example.blackjack.DelaysUtil.Companion.doubleDownButton
+import com.example.blackjack.DelaysUtil.Companion.drawCard
+import com.example.blackjack.DelaysUtil.Companion.drawNewCard
+import com.example.blackjack.DelaysUtil.Companion.flipDealerCard
+import com.example.blackjack.DelaysUtil.Companion.getWinner
+import com.example.blackjack.DelaysUtil.Companion.pile
+import com.example.blackjack.DelaysUtil.Companion.removeBannersBlackjack
+import com.example.blackjack.DelaysUtil.Companion.removeBlackjackBanner
+import com.example.blackjack.DelaysUtil.Companion.repeatBetButton
+import com.example.blackjack.DelaysUtil.Companion.revealBlackjack
+import com.example.blackjack.DelaysUtil.Companion.revealCard
+import com.example.blackjack.DelaysUtil.Companion.revealCardWhenFlip
+import com.example.blackjack.DelaysUtil.Companion.shakeCard
+import com.example.blackjack.DelaysUtil.Companion.splitActions
+import com.example.blackjack.DelaysUtil.Companion.toPile
 
 class GameFragment : Fragment() {
     val dealerHand = Hand()
@@ -33,11 +59,7 @@ class GameFragment : Fragment() {
     data class BetInfo( val marker: ImageView,
                         val madeBetMarker: ImageView,
                         var count: Int,
-                        val originalX: Float,
-                        val originalY: Float
-//    )
-//                        var originalX: Float = marker.x,
-//                        var originalY: Float = marker.y
+                        val value: Int
     )
     data class ImageViewPosition(val x: Float, val y: Float)
 
@@ -55,7 +77,6 @@ class GameFragment : Fragment() {
         Log.d("BlackJack", "onCreateView called")
 
         val view = inflater.inflate(R.layout.fragment_game, container, false)
-
         val marker5 = view.findViewById<ImageView>(R.id.marker5ImageView)
         val marker10 = view.findViewById<ImageView>(R.id.marker10ImageView)
         val marker25 = view.findViewById<ImageView>(R.id.marker25ImageView)
@@ -77,19 +98,12 @@ class GameFragment : Fragment() {
         val cardNextCard2 = view.findViewById<ImageView>(R.id.cardNextCard2ImageView)
         val cardNextCard3 = view.findViewById<ImageView>(R.id.cardNextCard3ImageView)
         val cardNextCard4 = view.findViewById<ImageView>(R.id.cardNextCard4ImageView)
-
         val card2BlankPlayer = view.findViewById<ImageView>(R.id.card2BlankPlayerImageView)
         val madeBetMarker5 = view.findViewById<ImageView>(R.id.madeBetMarker5ImageView)
         val madeBetMarker10 = view.findViewById<ImageView>(R.id.madeBetMarker10ImageView)
         val madeBetMarker25 = view.findViewById<ImageView>(R.id.madeBetMarker25ImageView)
         val madeBetMarker50 = view.findViewById<ImageView>(R.id.madeBetMarker50ImageView)
         val madeBetMarker100 = view.findViewById<ImageView>(R.id.madeBetMarker100ImageView)
-
-
-//
-
-
-
 
         val deal = view.findViewById<ImageButton>(R.id.dealImageButton)
         val stand = view.findViewById<ImageButton>(R.id.standImageButton)
@@ -119,7 +133,6 @@ class GameFragment : Fragment() {
         val cashoutButton = view.findViewById<ImageView>(R.id.cashoutImageView)
 
 
-
         cardBlankDealer.visibility = View.INVISIBLE
         cardNextCardDealer.visibility = View.INVISIBLE
         cardDarkDealer.visibility = View.INVISIBLE
@@ -135,10 +148,10 @@ class GameFragment : Fragment() {
 
         cardPile.visibility = View.INVISIBLE
         totalBetText.visibility = View.INVISIBLE
-        madeBetMarker5.visibility = View.VISIBLE
+        madeBetMarker5.visibility = View.INVISIBLE
         madeBetMarker10.visibility = View.INVISIBLE
         madeBetMarker25.visibility = View.INVISIBLE
-        madeBetMarker50.visibility = View.VISIBLE
+        madeBetMarker50.visibility = View.INVISIBLE
         madeBetMarker100.visibility = View.INVISIBLE
         markersWinnerDealer.visibility = View.INVISIBLE
         markersWinnerPlayer.visibility = View.INVISIBLE
@@ -171,9 +184,6 @@ class GameFragment : Fragment() {
                 card1BlankPlayer,
                 card2BlankPlayer,
                 cardNextCard,
-                cardNextCard2,
-                cardNextCard3,
-                cardNextCard4
             )
         val dealerCardImageViews: MutableList<ImageView> =
             mutableListOf(cardBlankDealer, cardDarkDealer, cardNextCardDealer)
@@ -181,8 +191,16 @@ class GameFragment : Fragment() {
         val playerHand = Hand()
         val dealerHand = Hand()
         val util = Util()
-        val delay = DelaysUtil()
-        val hand = Hand()
+//        val hand = Hand()
+//        val widthPx = 70   // BYT ??
+//        val heightPx = 100  // BYT ??
+        val widthDp = 70f // bredden i dp
+        val heightDp = 100f // höjden i dp
+        val density = resources.displayMetrics.density
+        val widthPx = (widthDp * density).toInt() // bredden i pixlar
+        val heightPx = (heightDp * density).toInt() // höjden i pixlar
+//        val cardList = mutableListOf<ImageView>()  // ???
+
         val deck = Deck(
             requireContext(),
             card1BlankPlayer,
@@ -190,7 +208,12 @@ class GameFragment : Fragment() {
             cardBlankDealer,
             cardDealingOutCardsToDealer,
             card2BlankPlayer,
-            cardDarkDealer
+            cardDarkDealer,
+            cardDisplay,
+            constraintlayout,
+            widthPx,
+            heightPx,
+            playerCardImageViews
         )
         val animations = Animations()
         val bannerManager = BannerManager(animations)
@@ -203,6 +226,7 @@ class GameFragment : Fragment() {
          var blackjacks: Int = 0
          var gamesPlayed: Int = 0
         var draws: Int = 0
+        var totalBetCost = 0
 
         animations.fadeInImageView(homeButton)
 
@@ -210,44 +234,73 @@ class GameFragment : Fragment() {
         var playerMoney = 500
         playerMoneyText.text = playerMoney.toString()
 
-        //        val betInfo5 = BetInfo(marker5, madeBetMarker5, 0, madeBetMarker5.x, madeBetMarker5.y)
-//        val betInfo10 = BetInfo(marker10, madeBetMarker10, 0, madeBetMarker10.x, madeBetMarker10.y)
-//        val betInfo25 = BetInfo(marker25, madeBetMarker25, 0, madeBetMarker25.x, madeBetMarker25.y)
-//        val betInfo50 = BetInfo(marker50, madeBetMarker50, 0, madeBetMarker50.x, madeBetMarker50.y)
-//        val betInfo100 = BetInfo(marker100, madeBetMarker100, 0, madeBetMarker100.x, madeBetMarker100.y)
-//        marker5.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-//            override fun onGlobalLayout() {
-//                val x = marker5.x
-//                val y = marker5.y
-//
-//                // Logga värdena
-//                Log.d("MyApp", "marker5 x: $x, marker5 y: $y")
-//
-//                marker5.viewTreeObserver.removeOnGlobalLayoutListener(this)
-//            }
-//        })
-//        val betInfo5 = BetInfo(marker5, madeBetMarker5, 0, marker5.x, marker5.y)
-//        val betInfo10 = BetInfo(marker10, madeBetMarker10,  0, marker10.x, marker10.y)
-//        val betInfo25 = BetInfo(marker25, madeBetMarker25,  0, marker25.x, marker25.y)
-//        val betInfo50 = BetInfo(marker50, madeBetMarker50,  0, marker50.x, marker50.y)
-//        val betInfo100 = BetInfo(marker100, madeBetMarker100,  0, marker100.x, marker100.y)
 
         val selectedMarkers = mutableMapOf<ImageView, BetInfo>()
+        val selectedBets = mutableListOf<BetInfo>()
 
-//        selectedMarkers[marker5] = betInfo5
-//        selectedMarkers[marker10] = betInfo10
-//        selectedMarkers[marker25] = betInfo25
-//        selectedMarkers[marker50] = betInfo50
-//        selectedMarkers[marker100] = betInfo100
 
-        val originalPositions = mutableMapOf<ImageView, Pair<Float, Float>>()
-
-        view.post {
-            originalPositions.clear() // Clear previous entries, if any
-            selectedMarkers.forEach { (marker, _) ->
-                originalPositions[marker] = Pair(marker.x, marker.y)
+        val originalPositionsMarkers = hashMapOf<ImageView, Pair<Float, Float>>()
+        fun saveOriginalPositionMarkers(imageView: ImageView) {
+            val viewTreeObserver = imageView.viewTreeObserver
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        imageView.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                    } else {
+                        imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                    originalPositionsMarkers[imageView] = Pair(imageView.x, imageView.y)
+                }
+            })
+        }
+        saveOriginalPositionMarkers(madeBetMarker5)
+        saveOriginalPositionMarkers(madeBetMarker10)
+        saveOriginalPositionMarkers(madeBetMarker25)
+        saveOriginalPositionMarkers(madeBetMarker50)
+        saveOriginalPositionMarkers(madeBetMarker100)
+        fun resetCardPositionsMarkers() {
+            originalPositionsMarkers.forEach { (imageView, position) ->
+                imageView.x = position.first
+                imageView.y = position.second
             }
         }
+
+
+        val originalPositionsCards = hashMapOf<ImageView, Pair<Float, Float>>()
+
+        fun saveOriginalPositionCards(imageView: ImageView) {
+            val viewTreeObserver = imageView.viewTreeObserver
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        imageView.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                    } else {
+                        imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                    originalPositionsCards[imageView] = Pair(imageView.x, imageView.y)
+                }
+            })
+        }
+        saveOriginalPositionCards(card1BlankPlayer)
+        saveOriginalPositionCards(card2BlankPlayer)
+        saveOriginalPositionCards(cardBlankDealer)
+        saveOriginalPositionCards(cardDarkDealer)
+        saveOriginalPositionCards(cardNextCard)
+
+        fun resetCardPositionsCards() {
+            originalPositionsCards.forEach { (imageView, position) ->
+                imageView.x = position.first
+                imageView.y = position.second
+            }
+        }
+
+
+//        view.post {
+//            originalPositions.clear() // Clear previous entries, if any
+//            selectedMarkers.forEach { (marker, _) ->
+//                originalPositions[marker] = Pair(marker.x, marker.y)
+//            }
+//        }
 
 
 
@@ -267,32 +320,37 @@ class GameFragment : Fragment() {
         }
 
         fun animationCardsToPile(cardImageViews: List<ImageView>, cardPile: ImageView) {
-            cardImageViews.forEachIndexed { index, cardImageView ->
-                animateCardToPile(cardImageView, cardPile, index)
-            }
             dealerCardImageViews.forEachIndexed { index, cardImageView ->
                 animateCardToPile(cardImageView, cardPile, index)
             }
+//            handler.postDelayed({
+            cardImageViews.forEachIndexed { index, cardImageView ->
+                animateCardToPile(cardImageView, cardPile, index)
+            }
+//            }, dealerCards)  // ha dealerns kort lägst?
+
         }
 
 
         fun moveCardsToPile(banner: View) {
             handler.postDelayed({
                 animationCardsToPile(playerCardImageViews, cardPile)
-            }, delay.cardsToPile)
+            }, cardsToPile)
 
             handler.postDelayed({
                 cardPile.visibility = View.VISIBLE
-            }, delay.pile)
+            }, pile)
 
             handler.postDelayed({
                 banner.visibility = View.INVISIBLE   // not working??
-            }, delay.banner)
+            }, bannerShow)
 
             handler.postDelayed({
                 animations.buttonInRightSide(repeatBet, requireContext(), 1000L)
-            }, delay.repeatBetButton)
-
+            }, repeatBetButton)
+            Handler().postDelayed({
+            Log.d("CardPositions", "after animated cards to pile position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}")
+            }, dealerCards)
         }
 
 
@@ -307,7 +365,7 @@ class GameFragment : Fragment() {
             gamesPlayed++
             Handler().postDelayed({
             animations.fadeInImageView(cashoutButton)
-            }, delay.cashOut)
+            }, cashOutMoney)
         }
 
 
@@ -342,7 +400,7 @@ class GameFragment : Fragment() {
             animations.flipCard(imageView)
             Handler().postDelayed({
                 updateDealerCards(hand)
-            }, delay.revealCardWhenFlip)
+            }, revealCardWhenFlip)
             hand.revealHiddenCard()
         }
 
@@ -350,56 +408,129 @@ class GameFragment : Fragment() {
             Log.d(TAG, "Entering someMethod()")
             Handler().postDelayed({
                 animations.shakeCardSubtle(cardDarkDealer)
-            }, delay.shakeCard)
+            }, shakeCard)
             Handler().postDelayed({
                 flipCard(cardDarkDealer, dealerHand)
-            }, delay.revealCard)
+            }, revealCard)
             hand.revealHiddenCard()
         }
 
-        fun drawCardDealer() {
-            Log.d(TAG, "Entering someMethod()")
-            deck.drawCard(dealerHand.cards)
-            val newCard = dealerHand.cards.last()
-            val newCardImageView = ImageView(context)
-            newCardImageView.setImageResource(cardDisplay.getCardImage(newCard))
+        var dealerDrawCounter = 0
+        var playerHitCounter = 0
 
-            val offsetDp = 15f
+        fun drawFirstCard(hand: Hand, previousCard: ImageView, offsetDp: Float, widthDp: Float, heightDp: Float, dealingOutCards: ImageView, card1: ImageView, card2: ImageView, counter: Int, cardList: MutableList<ImageView>): Int {
+            deck.drawCard(hand.cards)
+            val newCard = hand.cards.last()
+            val image = cardDisplay.getCardImage(newCard)
+
+            val cardNextCard = ImageView(context).apply {
+                visibility = View.VISIBLE
+                setImageResource(image)
+                id = View.generateViewId()
+            }
+
             val density = resources.displayMetrics.density
             val offsetPx = (offsetDp * density).toInt()
-            val cardDarkDealerEndX = cardDarkDealer.x + offsetPx
-            val cardBlankDealerEndX = cardBlankDealer.x + offsetPx
+            val widthPx = (widthDp * density).toInt()
+            val heightPx = (heightDp * density).toInt()
+            val cardEndX = previousCard.x + offsetPx
 
-            animations.moveCard(
-                cardDarkDealer,
-                cardDarkDealer.x,
-                cardDarkDealer.y,
-                cardBlankDealerEndX,
-                cardBlankDealer.y,
-                500L,
-                0L
-            )
-
+            val constraintLayout = constraintlayout
+            val params = ConstraintLayout.LayoutParams(widthPx, heightPx)
+            cardNextCard.setLayoutParams(params)
+            constraintLayout.addView(cardNextCard)
+            cardList.add(cardNextCard)
             deck.performDealingAnimation(
-                cardNextCardDealer,
-                cardDealingOutCardsToDealer.x,
-                cardDealingOutCardsToDealer.y,
-                cardDarkDealerEndX,
-                cardDarkDealer.y,
+                cardNextCard,
+                dealingOutCards.x,
+                dealingOutCards.y,
+                cardEndX,
+                previousCard.y,
                 0f,
                 180f
             )
+            val card1EndX = card1.x + offsetPx
+            val card2EndX = card2.x + offsetPx
 
-            newCardImageView?.let {
-                val image = cardDisplay.getCardImage(newCard)
-                it.setImageResource(image)
-                cardNextCardDealer.visibility = View.VISIBLE
-                it.visibility = View.VISIBLE
-                val index = dealerHand.cards.indexOf(newCard)
-                if (index < dealerCardImageViews.size) {
-                    dealerCardImageViews[index].setImageResource(cardDisplay.getCardImage(newCard))
-                    dealerCardImageViews[index].visibility = View.VISIBLE
+            val card1Animator = ObjectAnimator.ofFloat(
+                card2,
+                View.X,
+                card2.x,
+                card1EndX
+            )
+            card1Animator.interpolator = AccelerateDecelerateInterpolator()
+            card1Animator.duration = 500L
+
+            val card2Animator = ObjectAnimator.ofFloat(
+                cardNextCard,
+                View.X,
+                dealingOutCards.x,
+                card2EndX
+            )
+            card2Animator.interpolator = AccelerateDecelerateInterpolator()
+            card2Animator.duration = 500L
+
+            val animatorSet = AnimatorSet()
+            animatorSet.playTogether(card1Animator, card2Animator)
+
+            animatorSet.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    val cardNextCardEndX = card2.x + offsetPx
+                    val cardNextCardAnimator = ObjectAnimator.ofFloat(
+                        cardNextCard,
+                        View.X,
+                        card2EndX,
+                        cardNextCardEndX
+                    )
+                    cardNextCardAnimator.interpolator = AccelerateDecelerateInterpolator()
+                    cardNextCardAnimator.duration = 500L
+                    cardNextCardAnimator.start()
                 }
+            })
+            animatorSet.start()
+            return counter + 1
+        }
+
+
+        fun drawCard(hand: Hand, previousCard: ImageView, offsetDp: Float, widthDp: Float, heightDp: Float, dealingOutCards: ImageView, counter: Int, cardList: MutableList<ImageView>): Int {
+            deck.drawCard(hand.cards)
+            val newCard = hand.cards.last()
+            val image = cardDisplay.getCardImage(newCard)
+
+            val cardNextCard = ImageView(context).apply {
+                visibility = View.VISIBLE
+                setImageResource(image)
+                id = View.generateViewId()
+            }
+            val density = resources.displayMetrics.density
+            val offsetPx = (offsetDp * density).toInt()
+            val widthPx = (widthDp * density).toInt()
+            val heightPx = (heightDp * density).toInt()
+            val cardEndX = previousCard.x + offsetPx
+
+            val constraintLayout = constraintlayout
+            val params = ConstraintLayout.LayoutParams(widthPx, heightPx)
+            cardList.add(cardNextCard)
+            cardNextCard.setLayoutParams(params)
+            constraintLayout.addView(cardNextCard)
+
+            deck.performDealingAnimation(
+                cardNextCard,
+                dealingOutCards.x,
+                dealingOutCards.y,
+                cardEndX,
+                previousCard.y,
+                0f,
+                180f
+            )
+            return counter +1
+        }
+
+        fun drawCardDealer() {
+            if (dealerDrawCounter == 0) {
+                dealerDrawCounter = drawFirstCard(dealerHand, cardDarkDealer, 15f, 50f, 70f, cardDealingOutCardsToDealer, cardBlankDealer, cardDarkDealer, dealerDrawCounter, dealerCardImageViews)
+            }else if (dealerDrawCounter > 0){
+                dealerDrawCounter = drawCard(dealerHand,cardDarkDealer, 15f + (15f * dealerDrawCounter), 50f, 70f, cardDealingOutCardsToDealer, dealerDrawCounter, dealerCardImageViews)
             }
         }
 
@@ -474,6 +605,7 @@ class GameFragment : Fragment() {
                     totalBet = lastBetMarkersValue.sum()
                     totalBetText.text = totalBet.toString()
                     losses++
+
                 }
 
                 "Draw" -> {
@@ -486,15 +618,19 @@ class GameFragment : Fragment() {
                     totalBet = lastBetMarkersValue.sum()
                     totalBetText.text = totalBet.toString()
                     draws++
+
                 }
             }
+//            totalBet = 0
+//            lastBet = 0
+//            lastBetMarkersValue.clear()
 
+//            totalBetText.text = "0"
             gameEnd()
         }
 
 
         fun Hand.updatePointsText(textView: TextView, hasPlayerStood: Boolean) {
-            Log.d(TAG, "Entering someMethod()")
             val pointsPair = calculatePoints(cards)
             val pointsWithAceAsOne = pointsPair.first
             val pointsWithAceAsEleven = pointsPair.second
@@ -514,11 +650,12 @@ class GameFragment : Fragment() {
             }
 
             util.setTextViewBackground(textView, pointsText, R.color.black)
-
         }
 
+
+
+
         fun checKDealerPoints(dealerHand: Hand, dealerPointsText: TextView) {
-            Log.d(TAG, "Entering someMethod()")
             val (pointsWithAceAsOne, pointsWithAceAsEleven) = dealerHand.calculatePoints(dealerHand.cards)
             when {
                 pointsWithAceAsEleven > 21 && pointsWithAceAsOne > 21 -> {
@@ -534,15 +671,18 @@ class GameFragment : Fragment() {
                 }
 
                 pointsWithAceAsEleven < 17 && pointsWithAceAsOne < 17 -> {
-                    do {
+                    while (dealerHand.calculatePoints(dealerHand.cards).second < 17) {
+                        Log.d("blackjack", "drawCardWithDelay")
                         drawCardDealer()
                         dealerHand.updatePointsText(pointsDealerText, false)
-                    } while (dealerHand.calculatePoints(dealerHand.cards).second < 17)
+
+                    }
                 }
             }
+
             Handler().postDelayed({
                 determineWinner(playerHand, dealerHand)
-            }, delay.determineWinner)
+            }, getWinner)
         }
 
         fun setupMarker(
@@ -551,20 +691,16 @@ class GameFragment : Fragment() {
             value: Int,
             totalBetText: TextView,
             dealButton: ImageButton,
-            originalX: Float,
-            originalY: Float
         ) {
-//            val originalX = marker.x
-//            val originalY = marker.y
 
-            val betInfo = selectedMarkers.getOrDefault(marker, BetInfo(marker, madeBetMarker, 0, originalX, originalY)).apply {
+            val betInfo = selectedMarkers.getOrDefault(marker, BetInfo(marker, madeBetMarker, 0, value)).apply {
         count++
     }
                  selectedMarkers[marker] = betInfo
 
                 marker.setOnClickListener {
-//
-                lastBetMarkersValue.add(value)
+                    selectedBets.add(betInfo)
+                    lastBetMarkersValue.add(value)
                 madeBetMarker.visibility = View.VISIBLE
                 animations.fadeInTextView(totalBetText)
                 lastBet = lastBetMarkersValue.sum()
@@ -573,8 +709,8 @@ class GameFragment : Fragment() {
                     madeBetMarker,
                     marker.x,
                     marker.y,
-                    betInfo.originalX,
-                    betInfo.originalY,
+                    madeBetMarker.x,
+                    madeBetMarker.y,
                     500L,
                     0L
                 )
@@ -586,34 +722,11 @@ class GameFragment : Fragment() {
             }
         }
 
-        fun getOriginalPositionAndSetupMarker(marker: ImageView, madeBetMarker: ImageView, value: Int, totalBetText: TextView, dealButton: ImageButton) {
-            marker.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val originalX = marker.x
-                    val originalY = marker.y
-
-                    val betInfo = BetInfo(marker, madeBetMarker, 0, originalX, originalY)
-                    selectedMarkers[marker] = betInfo
-
-                    setupMarker(marker, madeBetMarker, value, totalBetText, dealButton, originalX, originalY)
-
-                    marker.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                }
-            })
-        }
-
-        getOriginalPositionAndSetupMarker(marker5, madeBetMarker5, 5, totalBetText, deal)
-        getOriginalPositionAndSetupMarker(marker10, madeBetMarker10, 10, totalBetText, deal)
-        getOriginalPositionAndSetupMarker(marker25, madeBetMarker25, 25, totalBetText, deal)
-        getOriginalPositionAndSetupMarker(marker50, madeBetMarker50, 50, totalBetText, deal)
-        getOriginalPositionAndSetupMarker(marker100, madeBetMarker100, 100, totalBetText, deal)
-
-
-//        setupMarker(marker5, madeBetMarker5, 5, totalBetText, deal)
-//        setupMarker(marker10, madeBetMarker10, 10, totalBetText, deal)
-//        setupMarker(marker25, madeBetMarker25, 25, totalBetText, deal)
-//        setupMarker(marker50, madeBetMarker50, 50, totalBetText, deal)
-//        setupMarker(marker100, madeBetMarker100, 100, totalBetText, deal)
+        setupMarker(marker5, madeBetMarker5, 5, totalBetText, deal)
+        setupMarker(marker10, madeBetMarker10, 10, totalBetText, deal)
+        setupMarker(marker25, madeBetMarker25, 25, totalBetText, deal)
+        setupMarker(marker50, madeBetMarker50, 50, totalBetText, deal)
+        setupMarker(marker100, madeBetMarker100, 100, totalBetText, deal)
 
 
 
@@ -631,25 +744,29 @@ class GameFragment : Fragment() {
                                     bannerManager.fadeOutBanner(bannerSplit)
                                     moveCardsToPile(bannerSplit)
                                     draws++
-                                }, delay.bannerSplit)
+                                }, splitActions)
                                 Handler().postDelayed({
                                     animations.removeImage(bannerBlackjackDealerSplit)
                                     animations.removeImage(bannerBlackjackPlayerSplit)
-                                }, delay.removeBannersBlackjack)
+                                }, removeBannersBlackjack)
                             } else {
                                 animations.fadeInAndMoveUpImageView(bannerWin)
                                 animations.removeImage(bannerBlackjackPlayerSplit)
                                 bannerManager.fadeOutBanner(bannerWin)
                                 moveCardsToPile(bannerWin)
+                                playerMoney += (2.5 * totalBet).toInt()  // rätt??
+                                playerMoneyText.text = playerMoney.toString()
                                 wins++
+                                blackjacks++
+
                             }
-                        }, delay.blackjackDealer)
-                    }, delay.checkDealersCards)
+                        }, blackjackDealer)
+                    }, checkDealersCards)
                     gameEnd()
-                }, delay.blackjackPlayerBanner)
+                }, blackjackPlayerBanner)
                 Handler().postDelayed({
                     moveCardsToPile(bannerBlackjack)
-                }, delay.moveCardsToPile)
+                }, toPile)
                 gameEnd()
             } else if (!playerHand.isBlackjack()) {
                 Handler().postDelayed({
@@ -659,7 +776,7 @@ class GameFragment : Fragment() {
                     animations.fadeInTextView(pointsPlayerText)
                     dealerHand.updatePointsText(pointsDealerText, false)
                     animations.fadeInTextView(pointsDealerText)
-                }, delay.buttonsContinue)
+                }, buttonsContinue)
             }
         }
 
@@ -781,8 +898,8 @@ class GameFragment : Fragment() {
                 Handler().postDelayed({
                     flipCard(cardDarkDealer, dealerHand)
                     checKDealerPoints(dealerHand, pointsDealerText)
-                }, delay.checkDealer)
-            }, delay.drawCard)
+                }, checkDealer)
+            }, drawCard)
         }
 
         fun insurance() {
@@ -799,14 +916,14 @@ class GameFragment : Fragment() {
                     bannerManager.fadeOutBanner(bannerLose)
                     moveCardsToPile(bannerLose)
                     losses++
-                }, delay.revealBlackjack)
+                }, revealBlackjack)
                 Handler().postDelayed({
                     animations.removeImage(bannerBlackjackDealerSplit)
-                }, delay.removeBlackjackBanner)
+                }, removeBlackjackBanner)
             } else if (!dealerHand.isBlackjack()) {
                 Handler().postDelayed({
                     checKDealerPoints(dealerHand, pointsDealerText)
-                }, delay.drawNewCard)
+                }, drawNewCard)
             }
         }
 
@@ -815,7 +932,7 @@ class GameFragment : Fragment() {
             dealerHand.clear()
             Handler().postDelayed({
                 doubleDown()
-            }, delay.doubleDownButton)
+            }, doubleDownButton)
             deck.dealHand(playerHand, dealerHand)
             updateDealerCards(dealerHand)
             updateCardImages(playerHand, playerCardImageViews, cardDisplay)
@@ -823,14 +940,14 @@ class GameFragment : Fragment() {
             checkForBlackjack(playerHand, dealerHand)
         }
 
-        repeatBet.setOnClickListener {
-            for (marker in lastBetMarkersValue) {
-                // kod?
-            }
-            totalBet = lastBet
-            totalBetText.text = totalBet.toString()
-            startGame()
-        }
+//        repeatBet.setOnClickListener {
+//            for (marker in lastBetMarkersValue) {
+//                // kod?
+//            }
+//            totalBet = lastBet
+//            totalBetText.text = totalBet.toString()
+//            startGame()
+//        }
 
 
         deal.setOnClickListener {
@@ -839,209 +956,13 @@ class GameFragment : Fragment() {
             playerMoneyText.text = playerMoney.toString()
             startGame()
         }
-        var hitCounter = 0
-
-        fun dealNewCard(cardIndex: Int) {
-            animations.shakeButton(hit)
-            deck.drawCard(playerHand.cards)
-            val newCard = playerHand.cards.last()
-            val image = cardDisplay.getCardImage(newCard)
-
-            val currentCardNextCard = when (cardIndex) {
-                1 -> cardNextCard2
-                2 -> cardNextCard3
-                3 -> cardNextCard4
-                else -> throw IllegalArgumentException("Invalid card index: $cardIndex")
-            }
-            currentCardNextCard.visibility = View.VISIBLE
-            currentCardNextCard.setImageResource(image)
-            currentCardNextCard.id = View.generateViewId()
-
-            if (cardIndex > 1) {
-                val prevCardNextCard = when (cardIndex - 1) {
-                    1 -> cardNextCard
-                    2 -> cardNextCard2
-                    3 -> cardNextCard3
-                    else -> throw IllegalArgumentException("Invalid card index: ${cardIndex - 1}")
-                }
-
-                val offsetDp = 35f
-                val density = resources.displayMetrics.density
-                val offsetPx = (offsetDp * density).toInt()
-                val cardNextCardEndX = prevCardNextCard.x + offsetPx
-
-                deck.performDealingAnimation(
-                    currentCardNextCard,
-                    cardDealingOutCardsToPlayer.x,
-                    cardDealingOutCardsToPlayer.y,
-                    cardNextCardEndX,
-                    prevCardNextCard.y,
-                    0f,
-                    180f
-                )
-            }
-            hitCounter++
-        }
-        fun animateCards(card2BlankPlayer: ImageView, cardNextCard: ImageView, offsetPx: Int) {
-            val card1BlankPlayerEndX = card1BlankPlayer.x + offsetPx
-            val card2BlankPlayerEndX = card2BlankPlayer.x + offsetPx
-
-            val card1Animator = ObjectAnimator.ofFloat(
-                card2BlankPlayer,
-                View.X,
-                card2BlankPlayer.x,
-                card1BlankPlayerEndX
-            )
-            card1Animator.interpolator = AccelerateDecelerateInterpolator()
-            card1Animator.duration = 500L
-
-            val card2Animator = ObjectAnimator.ofFloat(
-                cardNextCard,
-                View.X,
-                cardDealingOutCardsToPlayer.x,
-                card2BlankPlayerEndX
-            )
-            card2Animator.interpolator = AccelerateDecelerateInterpolator()
-            card2Animator.duration = 500L
-
-            val animatorSet = AnimatorSet()
-            animatorSet.playTogether(card1Animator, card2Animator)
-
-            animatorSet.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    val cardNextCardEndX = card2BlankPlayer.x + offsetPx
-                    val cardNextCardAnimator = ObjectAnimator.ofFloat(
-                        cardNextCard,
-                        View.X,
-                        card2BlankPlayerEndX,
-                        cardNextCardEndX
-                    )
-                    cardNextCardAnimator.interpolator = AccelerateDecelerateInterpolator()
-                    cardNextCardAnimator.duration = 500L
-                    cardNextCardAnimator.start()
-                }
-            })
-            animatorSet.start()
-        }
-
-        fun drawAndAnimateCard(previousCard: ImageView) {
-            deck.drawCard(playerHand.cards)
-            val newCard = playerHand.cards.last()
-            val image = cardDisplay.getCardImage(newCard)
-
-            val cardNextCard = ImageView(context).apply {   // card.id?
-                visibility = View.VISIBLE
-                setImageResource(image)
-                id = View.generateViewId()
-            }
-
-            val offsetDp = 35f
-            val widthDp = 70f
-            val heightDp = 100f
-            val density = resources.displayMetrics.density
-            val offsetPx = (offsetDp * density).toInt()
-            val widthPx = (widthDp * density).toInt()
-            val heightPx = (heightDp * density).toInt()
-            val cardEndX = previousCard.x + offsetPx
-
-            val constraintLayout = constraintlayout
-            val params = ConstraintLayout.LayoutParams(widthPx, heightPx)
-            cardNextCard.setLayoutParams(params)
-
-            constraintLayout.addView(cardNextCard)
 
 
-            deck.performDealingAnimation(
-                cardNextCard,
-                cardDealingOutCardsToPlayer.x,
-                cardDealingOutCardsToPlayer.y,
-                cardEndX,
-                previousCard.y,
-                0f,
-                180f
-            )
-
-            val card1BlankPlayerEndX = card1BlankPlayer.x + offsetPx
-            val card2BlankPlayerEndX = card2BlankPlayer.x + offsetPx
-
-            val card1Animator = ObjectAnimator.ofFloat(
-                card2BlankPlayer,
-                View.X,
-                card2BlankPlayer.x,
-                card1BlankPlayerEndX
-            )
-            card1Animator.interpolator = AccelerateDecelerateInterpolator()
-            card1Animator.duration = 500L
-
-            val card2Animator = ObjectAnimator.ofFloat(
-                cardNextCard,
-                View.X,
-                cardDealingOutCardsToPlayer.x,
-                card2BlankPlayerEndX
-            )
-            card2Animator.interpolator = AccelerateDecelerateInterpolator()
-            card2Animator.duration = 500L
-
-            val animatorSet = AnimatorSet()
-            animatorSet.playTogether(card1Animator, card2Animator)
-
-            animatorSet.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    val cardNextCardEndX = card2BlankPlayer.x + offsetPx
-                    val cardNextCardAnimator = ObjectAnimator.ofFloat(
-                        cardNextCard,
-                        View.X,
-                        card2BlankPlayerEndX,
-                        cardNextCardEndX
-                    )
-                    cardNextCardAnimator.interpolator = AccelerateDecelerateInterpolator()
-                    cardNextCardAnimator.duration = 500L
-                    cardNextCardAnimator.start()
-                }
-            })
-            animatorSet.start()
-
-            hitCounter++
-        }
-        fun drawPlayerCard(previousCard: ImageView) {
-
-            deck.drawCard(playerHand.cards)
-            val newCard = playerHand.cards.last()
-            val image = cardDisplay.getCardImage(newCard)
-
-            val cardNextCard = ImageView(context).apply {   // card.id?
-                visibility = View.VISIBLE
-                setImageResource(image)
-                id = View.generateViewId()
-            }
-
-            val offsetDp = 35f + (35f * hitCounter)
-            val widthDp = 70f
-            val heightDp = 100f
-            val density = resources.displayMetrics.density
-            val offsetPx = (offsetDp * density).toInt()
-            val widthPx = (widthDp * density).toInt()
-            val heightPx = (heightDp * density).toInt()
-            val cardEndX = previousCard.x + offsetPx
-
-            val constraintLayout = constraintlayout
-            val params = ConstraintLayout.LayoutParams(widthPx, heightPx)
-            cardNextCard.setLayoutParams(params)
-
-            constraintLayout.addView(cardNextCard)
 
 
-            deck.performDealingAnimation(
-                cardNextCard,
-                cardDealingOutCardsToPlayer.x,
-                cardDealingOutCardsToPlayer.y,
-                cardEndX,
-                previousCard.y,
-                0f,
-                180f
-            )
-            hitCounter++
-        }
+
+
+
 //            playerHand.clear()
 //            dealerHand.clear()
 //            hitCounter = 0
@@ -1051,84 +972,15 @@ class GameFragment : Fragment() {
 //                betInfo.madeBetMarker.visibility = View.INVISIBLE
 
         hit.setOnClickListener {
+            Log.d("CardPositions", "took a card position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}")
+
             animations.shakeButton(hit)
-            if (hitCounter == 0) {
+            if (playerHitCounter == 0) {
                 animations.buttonOutLeftSide(doubleDown, requireContext(), 1000L)
-                drawAndAnimateCard(card2BlankPlayer)
-            }else if (hitCounter > 0){
-                    drawPlayerCard(card2BlankPlayer)
+                playerHitCounter = drawFirstCard(playerHand, card2BlankPlayer, 35f, 70f, 100f, cardDealingOutCardsToPlayer, card1BlankPlayer, card2BlankPlayer, playerHitCounter, playerCardImageViews)
+            }else if (playerHitCounter > 0){
+                playerHitCounter = drawCard(playerHand, card2BlankPlayer, 35f + (35f * playerHitCounter), 70f, 100f, cardDealingOutCardsToPlayer, playerHitCounter, playerCardImageViews)
                 }
-//            } else if (hitCounter == 1) {
-//                animations.shakeButton(hit)
-//                deck.drawCard(playerHand.cards)
-//                val newCard = playerHand.cards.last()
-//                val image = cardDisplay.getCardImage(newCard)
-//
-//                cardNextCard2.visibility = View.VISIBLE
-//                cardNextCard2.setImageResource(image)
-//                cardNextCard2.id = View.generateViewId()
-//                val offsetDp = 35f
-//                val density = resources.displayMetrics.density
-//                val offsetPx = (offsetDp * density).toInt()
-//                val cardNextCardEndX = cardNextCard.x + offsetPx
-//                deck.performDealingAnimation(
-//                    cardNextCard2,
-//                    cardDealingOutCardsToPlayer.x,
-//                    cardDealingOutCardsToPlayer.y,
-//                    cardNextCardEndX,
-//                    cardNextCard.y,
-//                    0f,
-//                    180f
-//                )
-//                hitCounter++
-//            } else if (hitCounter == 2) {
-//                animations.shakeButton(hit)
-//                deck.drawCard(playerHand.cards)
-//                val newCard = playerHand.cards.last()
-//                val image = cardDisplay.getCardImage(newCard)
-//
-//                cardNextCard3.visibility = View.VISIBLE
-//                cardNextCard3.setImageResource(image)
-//                cardNextCard3.id = View.generateViewId()
-//                val offsetDp = 35f
-//                val density = resources.displayMetrics.density
-//                val offsetPx = (offsetDp * density).toInt()
-//                val cardNextCard2EndX = cardNextCard2.x + offsetPx
-//                deck.performDealingAnimation(
-//                    cardNextCard3,
-//                    cardDealingOutCardsToPlayer.x,
-//                    cardDealingOutCardsToPlayer.y,
-//                    cardNextCard2EndX,
-//                    cardNextCard2.y,
-//                    0f,
-//                    180f
-//                )
-//                hitCounter++
-//            } else if (hitCounter == 3) {
-//                animations.shakeButton(hit)
-//                deck.drawCard(playerHand.cards)
-//                val newCard = playerHand.cards.last()
-//                val image = cardDisplay.getCardImage(newCard)
-//
-//                cardNextCard4.visibility = View.VISIBLE
-//                cardNextCard4.setImageResource(image)
-//                cardNextCard4.id = View.generateViewId()
-//                val offsetDp = 35f
-//                val density = resources.displayMetrics.density
-//                val offsetPx = (offsetDp * density).toInt()
-//                val cardNextCard3EndX = cardNextCard3.x + offsetPx
-//                deck.performDealingAnimation(
-//                    cardNextCard4,
-//                    cardDealingOutCardsToPlayer.x,
-//                    cardDealingOutCardsToPlayer.y,
-//                    cardNextCard3EndX,
-//                    cardNextCard.y,
-//                    0f,
-//                    180f
-//                )
-//                hitCounter++
-
-
 
 
             animations.shakeTextSubtle(pointsPlayerText)
@@ -1144,7 +996,7 @@ class GameFragment : Fragment() {
                 animations.fadeOutTextView(pointsPlayerText)
                 Handler().postDelayed({
                     flipCard(cardDarkDealer, dealerHand)
-                }, delay.flipCard)
+                }, flipDealerCard)
                 Handler().postDelayed({
                     animations.fadeInAndMoveUpImageView(bannerBust)
                     bannerManager.fadeOutBanner(bannerBust)
@@ -1153,7 +1005,7 @@ class GameFragment : Fragment() {
                     animations.fadeOutTextView(pointsDealerText)
                     animations.fadeOutTextView(totalBetText)
                     losses++
-                }, delay.bust)
+                }, bust)
             } else if (pointsWithAceAsOne == 21 || pointsWithAceAsEleven == 21) {
                 animations.buttonOutRightSide(hit, requireContext(), 1000L)
                 animations.buttonOutRightSide(stand, requireContext(), 1000L)
@@ -1161,13 +1013,15 @@ class GameFragment : Fragment() {
                 Handler().postDelayed({
                     flipCard(cardDarkDealer, dealerHand)
                     checKDealerPoints(dealerHand, pointsDealerText)
-                }, delay.checkDealer)
+                }, checkDealer)
             }
         }
 
 
 
         stand.setOnClickListener {
+            Log.d("CardPositions", "stand position for ${card1BlankPlayer.id}: ${card1BlankPlayer.x}, ${card1BlankPlayer.y}")
+
             dealerHand.updatePointsText(pointsDealerText, false)
             playerHand.updatePointsText(pointsPlayerText, true)
             animations.buttonOutLeftSide(doubleDown, requireContext(), 1000L)
@@ -1195,8 +1049,8 @@ class GameFragment : Fragment() {
                     flipCard(cardDarkDealer, dealerHand)
                     Handler().postDelayed({
                         checKDealerPoints(dealerHand, pointsDealerText)
-                    }, delay.checkDealer)
-                }, delay.flipCard)
+                    }, checkDealer)
+                }, flipDealerCard)
 
             }
         }
@@ -1204,15 +1058,34 @@ class GameFragment : Fragment() {
 
 
         repeatBet.setOnClickListener {
-            totalBet = lastBetMarkersValue.sum()
-            totalBetText.text = totalBet.toString()
             animations.buttonOutRightSide(repeatBet, requireContext(), 1000L)
 
-            for ((marker, betInfo) in selectedMarkers) {
-                betInfo.count = lastBetMarkersValue.count { it == betInfo.marker.id }
-                betInfo.marker.visibility = View.VISIBLE
+            resetCardPositionsCards()
+            resetCardPositionsMarkers()
+
+            var totalBetCost = 0
+
+
+            for (betInfo in selectedBets) {
+                betInfo.madeBetMarker.visibility = View.VISIBLE
+                betInfo.count++
+                totalBetCost += betInfo.count * betInfo.value
+
+                animations.moveCard(
+                    betInfo.madeBetMarker,
+                    betInfo.marker.x,
+                    betInfo.marker.y,
+                    betInfo.madeBetMarker.x,
+                    betInfo.madeBetMarker.y,
+                    500L,
+                    0L
+                )
             }
-            startGame()
+
+            totalBet = lastBetMarkersValue.sum()
+            totalBetText.text = totalBet.toString()
+            animations.fadeInTextView(totalBetText)
+
         }
 
 
