@@ -37,5 +37,6 @@ class DelaysUtil {
         val updateMoney = 3500L
         val noMoney = 1000L
         val checkDealerCards = 2000L
+        val lowHand = 1300L
     }
 }
