@@ -36,6 +36,7 @@ import com.example.blackjack.DelaysUtil.Companion.drawNewCard
 import com.example.blackjack.DelaysUtil.Companion.flipDealerCard
 import com.example.blackjack.DelaysUtil.Companion.gameStart
 import com.example.blackjack.DelaysUtil.Companion.invisbleCards
+import com.example.blackjack.DelaysUtil.Companion.lowHand
 import com.example.blackjack.DelaysUtil.Companion.noMoney
 import com.example.blackjack.DelaysUtil.Companion.pile
 import com.example.blackjack.DelaysUtil.Companion.removeBannersBlackjack
@@ -64,6 +65,7 @@ class GameFragment : Fragment() {
         arguments?.let {
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -215,7 +217,6 @@ class GameFragment : Fragment() {
         var isNewRound = true
 
 
-
         val originalPositionsMarkers = hashMapOf<ImageView, Pair<Float, Float>>()
         fun saveOriginalPositionMarkers(imageView: ImageView) {
             val viewTreeObserver = imageView.viewTreeObserver
@@ -288,34 +289,34 @@ class GameFragment : Fragment() {
                 }
                 repeatBet.isEnabled = false
                 if (playerMoney >= value) {
-                selectedBets.add(betInfo)
+                    selectedBets.add(betInfo)
                     playerMoney -= value
-                lastBetMarkersValue.add(value)
-                madeBetMarker.visibility = View.VISIBLE
-                animations.fadeInTextView(totalBetText)
-                lastBet = lastBetMarkersValue.sum()
+                    lastBetMarkersValue.add(value)
+                    madeBetMarker.visibility = View.VISIBLE
+                    animations.fadeInTextView(totalBetText)
+                    lastBet = lastBetMarkersValue.sum()
 
-                animations.moveObject(
-                    madeBetMarker,
-                    marker.x,
-                    marker.y,
-                    madeBetMarker.x,
-                    madeBetMarker.y,
-                    500L,
-                    0L
-                )
-                totalBet = lastBetMarkersValue.sum()
-                totalBetText.text = totalBet.toString()
-                animations.buttonInRightSide(deal, requireContext(), 1000L)
-                animations.buttonOutRightSide(repeatBet, requireContext(), 1000L)
-                util.setTextViewBackground(totalBetText, totalBet.toString(), R.color.black)
-            }else {
-                animations.fadeInAndMoveUpImageView(bannerNoFunds)
+                    animations.moveObject(
+                        madeBetMarker,
+                        marker.x,
+                        marker.y,
+                        madeBetMarker.x,
+                        madeBetMarker.y,
+                        500L,
+                        0L
+                    )
+                    totalBet = lastBetMarkersValue.sum()
+                    totalBetText.text = totalBet.toString()
+                    animations.buttonInRightSide(deal, requireContext(), 1000L)
+                    animations.buttonOutRightSide(repeatBet, requireContext(), 1000L)
+                    util.setTextViewBackground(totalBetText, totalBet.toString(), R.color.black)
+                } else {
+                    animations.fadeInAndMoveUpImageView(bannerNoFunds)
                     handler.postDelayed({
-                    animations.fadeOutImageView(bannerNoFunds)
-                }, noMoney)
+                        animations.fadeOutImageView(bannerNoFunds)
+                    }, noMoney)
+                }
             }
-        }
         }
         setupMarker(marker5, madeBetMarker5, 5, totalBetText, deal)
         setupMarker(marker10, madeBetMarker10, 10, totalBetText, deal)
@@ -574,7 +575,7 @@ class GameFragment : Fragment() {
                     0L
                 )
                 handler.postDelayed({
-                animations.fadeOutMarkersImageView(betInfo.madeBetMarker)
+                    animations.fadeOutMarkersImageView(betInfo.madeBetMarker)
                 }, removeMarkers)
             }
         }
@@ -585,14 +586,14 @@ class GameFragment : Fragment() {
             playerHitCounter = 0
             dealerDrawCounter = 0
             handler.postDelayed({
-            for (marker in markerList) {
-            marker.isEnabled = true
-        }
-        }, activateMarkers)
+                for (marker in markerList) {
+                    marker.isEnabled = true
+                }
+            }, activateMarkers)
             deal.isEnabled = true
             repeatBet.isEnabled = true
 
-        animations.fadeOutTextView(pointsPlayerText)
+            animations.fadeOutTextView(pointsPlayerText)
             animations.fadeOutTextView(pointsDealerText)
             animations.fadeOutTextView(totalBetText)
             gamesPlayed++
@@ -600,8 +601,8 @@ class GameFragment : Fragment() {
                 animations.fadeInImageView(cashOutButton)
             }, cashOutMoney)
             handler.postDelayed({
-            resetPositionsCards()
-            resetPositionsMarkers()
+                resetPositionsCards()
+                resetPositionsMarkers()
                 yes.isEnabled = true
                 no.isEnabled = true
             }, reset)
@@ -686,25 +687,27 @@ class GameFragment : Fragment() {
             when {
                 pointsWithAceAsEleven > 21 && pointsWithAceAsOne > 21 -> {
                     dealerPointsText.text = pointsWithAceAsOne.toString()
+                                determineWinner(playerHand, dealerHand)
                 }
 
                 pointsWithAceAsEleven > 21 -> {
                     dealerPointsText.text = pointsWithAceAsOne.toString()
+                                determineWinner(playerHand, dealerHand)
                 }
 
                 pointsWithAceAsEleven in 17..21 -> {
                     dealerPointsText.text = pointsWithAceAsEleven.toString()
+                                determineWinner(playerHand, dealerHand)
                 }
-
-                pointsWithAceAsEleven < 17 && pointsWithAceAsOne < 17 -> {              // FIXA DENNA
-                    while (dealerHand.calculatePoints(dealerHand.cards).second < 17) {
-                        Log.d("blackjack", "drawCardWithDelay")
-                        drawCardDealer()
-                        dealerHand.updatePointsText(pointsDealerText, false)
-                    }
+                pointsWithAceAsEleven < 17 && pointsWithAceAsOne < 17 -> {
+                    drawCardDealer()
+                    dealerHand.updatePointsText(pointsDealerText, false)
+                    Log.d("blackjack", "drawCardWithDelay")
+                    handler.postDelayed({
+                    checKDealerPoints(dealerHand, pointsDealerText)
+                    }, lowHand)
                 }
             }
-                determineWinner(playerHand, dealerHand)
         }
 
         fun checkForBlackjack(playerHand: Hand, dealerHand: Hand) {
@@ -715,7 +718,6 @@ class GameFragment : Fragment() {
                     handler.postDelayed({
                         handler.postDelayed({
                             if (dealerHand.isBlackjack()) {
-
                                 animations.fadeInImageView(bannerBlackjackDealerSplit)
                                 handler.postDelayed({
                                     animations.fadeInAndMoveUpImageView(bannerSplit)
@@ -1068,7 +1070,7 @@ class GameFragment : Fragment() {
                             playerMoneyText.text = playerMoney.toString()
                         }, updateMoney)
                     }
-                    }
+                }
 
                 no.setOnClickListener {
                     no.isEnabled = false
@@ -1077,7 +1079,7 @@ class GameFragment : Fragment() {
             } else {
                 handler.postDelayed({
                     flipCard(cardDarkDealer, dealerHand)
-                    if (dealerHand.isBlackjack()){
+                    if (dealerHand.isBlackjack()) {
                         handler.postDelayed({
                             animations.fadeInAndMoveUpImageView(bannerBlackjack)
                             bannerManager.fadeOutBanner(bannerBlackjack)
@@ -1088,10 +1090,10 @@ class GameFragment : Fragment() {
                             losses++
                             gameEnd()
                         }, blackjackDealer)
-                    }else
-                    handler.postDelayed({
-                        checKDealerPoints(dealerHand, pointsDealerText)
-                    }, checkDealer)
+                    } else
+                        handler.postDelayed({
+                            checKDealerPoints(dealerHand, pointsDealerText)
+                        }, checkDealer)
                 }, flipDealerCard)
             }
         }
@@ -1128,7 +1130,7 @@ class GameFragment : Fragment() {
             totalBetText.text = totalBet.toString()
             animations.fadeInTextView(totalBetText)
             handler.postDelayed({
-            startGame()
+                startGame()
             }, gameStart)
         }
 

@@ -101,7 +101,7 @@ class Deck(
 
 
 //        card = cards.random()
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO)
         dealerHand.cards.add(card)
         cards.remove(card)
         handler.postDelayed({
@@ -134,7 +134,7 @@ class Deck(
             fifthCardImageView.visibility = View.VISIBLE
         }, thirdCard)
 
-            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TEN)
+            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO)
 //        card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
