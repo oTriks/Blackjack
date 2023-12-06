@@ -34,5 +34,8 @@ class DelaysUtil {
         val gameStart = 1000L
         val reset = 4000L
         val activateMarkers = 4000L
+        val updateMoney = 3500L
+        val noMoney = 1000L
+        val checkDealerCards = 2000L
     }
 }
