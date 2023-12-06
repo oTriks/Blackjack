@@ -83,7 +83,9 @@ class Deck(
     }
 
     fun dealHand(playerHand: Hand, dealerHand: Hand) {
-        var card = cards.random()
+//        var card = cards.random()
+        var card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
+
         playerHand.cards.add(card)
         cards.remove(card)
         performDealingAnimation(
@@ -98,8 +100,8 @@ class Deck(
         firstCardImageView.visibility = View.VISIBLE
 
 
-        card = cards.random()
-//            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO)
+//        card = cards.random()
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.FIVE)
         dealerHand.cards.add(card)
         cards.remove(card)
         handler.postDelayed({
@@ -115,8 +117,8 @@ class Deck(
             thirdCardImageView.visibility = View.VISIBLE
         }, secondCard)
 
-//            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
-        card = cards.random()
+            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TEN)
+//        card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
         handler.postDelayed({
@@ -132,8 +134,8 @@ class Deck(
             fifthCardImageView.visibility = View.VISIBLE
         }, thirdCard)
 
-//            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO)
-        card = cards.random()
+            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TEN)
+//        card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
         handler.postDelayed({
