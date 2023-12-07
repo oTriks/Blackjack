@@ -24,7 +24,6 @@ import com.example.blackjack.DelaysUtil.Companion.activateMarkers
 import com.example.blackjack.DelaysUtil.Companion.bannerShow
 import com.example.blackjack.DelaysUtil.Companion.blackjackDealer
 import com.example.blackjack.DelaysUtil.Companion.blackjackPlayerBanner
-import com.example.blackjack.DelaysUtil.Companion.bust
 import com.example.blackjack.DelaysUtil.Companion.buttonsContinue
 import com.example.blackjack.DelaysUtil.Companion.cardsToPile
 import com.example.blackjack.DelaysUtil.Companion.cashOutMoney
@@ -39,6 +38,7 @@ import com.example.blackjack.DelaysUtil.Companion.invisbleCards
 import com.example.blackjack.DelaysUtil.Companion.lowHand
 import com.example.blackjack.DelaysUtil.Companion.noMoney
 import com.example.blackjack.DelaysUtil.Companion.pile
+import com.example.blackjack.DelaysUtil.Companion.playerBust
 import com.example.blackjack.DelaysUtil.Companion.removeBannersBlackjack
 import com.example.blackjack.DelaysUtil.Companion.removeBlackjackBanner
 import com.example.blackjack.DelaysUtil.Companion.removeMarkers
@@ -207,6 +207,9 @@ class GameFragment : Fragment() {
         var blackjacks: Int = 0
         var gamesPlayed: Int = 0
         var draws: Int = 0
+        var bust: Int = 0
+        var dealerBust: Int = 0
+        var compare: Int = 0
         var totalBetCost = 0
         var playerMoney = 500
         var totalBet = 0
@@ -688,6 +691,7 @@ class GameFragment : Fragment() {
                 pointsWithAceAsEleven > 21 && pointsWithAceAsOne > 21 -> {
                     dealerPointsText.text = pointsWithAceAsOne.toString()
                                 determineWinner(playerHand, dealerHand)
+                    dealerBust++
                 }
 
                 pointsWithAceAsEleven > 21 -> {
@@ -698,6 +702,7 @@ class GameFragment : Fragment() {
                 pointsWithAceAsEleven in 17..21 -> {
                     dealerPointsText.text = pointsWithAceAsEleven.toString()
                                 determineWinner(playerHand, dealerHand)
+                    compare++
                 }
                 pointsWithAceAsEleven < 17 && pointsWithAceAsOne < 17 -> {
                     drawCardDealer()
@@ -927,7 +932,7 @@ class GameFragment : Fragment() {
         }
 
         fun cashOut() {
-            val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+            val sharedPreferences = requireActivity().getSharedPreferences("myGamePreferences", Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
             editor.putInt("playerMoney", playerMoney)
             editor.putInt("wins", wins)
@@ -935,8 +940,12 @@ class GameFragment : Fragment() {
             editor.putInt("draws", draws)
             editor.putInt("blackjacks", blackjacks)
             editor.putInt("gamesPlayed", gamesPlayed)
+            editor.putInt("bust", bust)
+            editor.putInt("dealerBust", dealerBust)
+            editor.putInt("compare", compare)
 
             editor.apply()
+
             val intent = Intent(requireContext(), HighscoreActivity::class.java)
             startActivity(intent)
         }
@@ -1012,8 +1021,9 @@ class GameFragment : Fragment() {
                     animations.fadeOutTextView(pointsDealerText)
                     animations.fadeOutTextView(totalBetText)
                     losses++
+                    bust++
                     gameEnd()
-                }, bust)
+                }, playerBust)
             } else if (pointsWithAceAsOne == 21 || pointsWithAceAsEleven == 21) {
                 animations.buttonOutRightSide(hit, requireContext(), 1000L)
                 animations.buttonOutRightSide(stand, requireContext(), 1000L)
