@@ -24,7 +24,7 @@ class DelaysUtil {
         val drawNewCard = 4000L
         val doubleDownButton = 1200L
         val flipDealerCard = 500L
-        val bust = 1000L
+        val playerBust = 1000L
         val cashOutMoney = 2000L
         val invisbleCards = 3000L
         val secondCard = 500L
