@@ -113,7 +113,7 @@
          android:id="@+id/dealImageButton"
          android:layout_width="396dp"
          android:layout_height="133dp"
-         android:layout_marginStart="132dp"
+         android:layout_marginStart="250dp"
          android:layout_marginBottom="216dp"
          android:clickable="false"
          android:focusable="false"
@@ -121,13 +121,14 @@
          android:scaleY="0.4"
          android:src="@drawable/sign_deal"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
      <ImageButton
          android:id="@+id/repeatBetImageButton"
          android:layout_width="396dp"
          android:layout_height="133dp"
-         android:layout_marginStart="132dp"
+         android:layout_marginStart="250dp"
          android:layout_marginBottom="85dp"
          android:clickable="false"
          android:focusable="false"
@@ -135,59 +136,66 @@
          android:scaleY="0.4"
          android:src="@drawable/sign_repeat_bet"
          app:layout_constraintBottom_toTopOf="@+id/marker25ImageView"
-         app:layout_constraintStart_toStartOf="parent" />
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+         app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
      <ImageButton
          android:id="@+id/standImageButton"
          android:layout_width="396dp"
          android:layout_height="133dp"
-         android:layout_marginStart="140dp"
-         android:layout_marginBottom="115dp"
+         android:layout_marginStart="270dp"
+         android:layout_marginBottom="112dp"
          android:clickable="false"
          android:focusable="false"
          android:scaleX="0.35"
          android:scaleY="0.35"
          android:src="@drawable/sign_stand_white"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
      <ImageButton
          android:id="@+id/hitImageButton"
          android:layout_width="396dp"
          android:layout_height="133dp"
-         android:layout_marginStart="140dp"
-         android:layout_marginBottom="164dp"
+         android:layout_marginStart="270dp"
+         android:layout_marginBottom="160dp"
          android:clickable="false"
          android:focusable="false"
          android:scaleX="0.35"
          android:scaleY="0.35"
          android:src="@drawable/sign_hit_white"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+         app:layout_constraintHorizontal_bias="0.498"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
      <ImageButton
          android:id="@+id/doubleDownImageButton"
          android:layout_width="396dp"
          android:layout_height="133dp"
-         android:layout_marginEnd="140dp"
-         android:layout_marginBottom="115dp"
+         android:layout_marginEnd="270dp"
+         android:layout_marginBottom="116dp"
          android:clickable="false"
          android:focusable="false"
          android:scaleX="0.35"
          android:scaleY="0.35"
          android:src="@drawable/sign_double_down"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
-         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView" />
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+         app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
      <ImageView
          android:id="@+id/cardBlankDealerImageView"
          android:layout_width="70dp"
          android:layout_height="100dp"
-         android:layout_marginStart="124dp"
+         android:layout_marginStart="117dp"
          android:layout_marginTop="92dp"
          android:clickable="false"
          android:focusable="false"
          android:src="@drawable/card_blank"
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+         app:layout_constraintHorizontal_bias="0.0"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView"
          app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
@@ -209,14 +217,14 @@
          android:id="@+id/card1BlankPlayerImageView"
          android:layout_width="70dp"
          android:layout_height="100dp"
-         android:layout_marginStart="115dp"
+         android:layout_marginStart="117dp"
          android:layout_marginBottom="320dp"
          android:clickable="false"
          android:focusable="false"
          android:src="@drawable/card_blank"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
          app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
-         app:layout_constraintHorizontal_bias="0.013"
+         app:layout_constraintHorizontal_bias="0.0"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
      <ImageView
@@ -374,7 +382,7 @@
          android:src="@drawable/marker_25"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
          app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
-         app:layout_constraintHorizontal_bias="0.475"
+         app:layout_constraintHorizontal_bias="0.4"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
      <ImageView
@@ -572,11 +580,12 @@
          app:layout_constraintStart_toStartOf="@+id/cardDarkDealerImageView"
          app:layout_constraintTop_toBottomOf="@+id/cardDarkDealerImageView" />
 
+
      <TextView
          android:id="@+id/playerMoneyTextView"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginStart="48dp"
+         android:layout_marginStart="76dp"
          android:clickable="false"
          android:focusable="false"
          android:fontFamily="monospace"
@@ -586,33 +595,34 @@
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView"
          app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
 
-
      <ImageButton
          android:id="@+id/yesImageButton"
          android:layout_width="396dp"
          android:layout_height="133dp"
-         android:layout_marginTop="90dp"
-         android:layout_marginEnd="110dp"
+         android:layout_marginTop="92dp"
+         android:layout_marginEnd="215dp"
          android:clickable="false"
          android:focusable="false"
          android:scaleX="0.5"
          android:scaleY="0.5"
          android:src="@drawable/sign_yes"
-         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+         app:layout_constraintStart_toStartOf="@+id/backgroundImageView"
          app:layout_constraintTop_toTopOf="@+id/insuranceImageButton" />
 
      <ImageButton
          android:id="@+id/noImageButton"
          android:layout_width="396dp"
          android:layout_height="133dp"
-         android:layout_marginStart="110dp"
-         android:layout_marginTop="90dp"
+         android:layout_marginStart="215dp"
+         android:layout_marginTop="92dp"
          android:clickable="false"
          android:focusable="false"
          android:scaleX="0.5"
          android:scaleY="0.5"
          android:src="@drawable/sign_no"
-         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+         app:layout_constraintStart_toStartOf="@+id/backgroundImageView"
          app:layout_constraintTop_toTopOf="@+id/insuranceImageButton" />
 
      <ImageButton
