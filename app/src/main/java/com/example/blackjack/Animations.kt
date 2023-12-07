@@ -97,15 +97,13 @@ class Animations {
 
             fadeOut.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
-                    // Optional: Code to run when animation starts
                 }
 
                 override fun onAnimationEnd(animation: Animation?) {
-                    textView.visibility = View.INVISIBLE // or View.GONE
+                    textView.visibility = View.INVISIBLE
                 }
 
                 override fun onAnimationRepeat(animation: Animation?) {
-                    // Optional: Code to run when animation repeats
                 }
             })
         }
@@ -127,6 +125,8 @@ class Animations {
             override fun onAnimationRepeat(animation: Animation?) {}
         })
     }
+
+
 
     fun fadeOutMarkersImageView(imageView: ImageView, duration: Long = 200) {
         val fadeOut = AlphaAnimation(1f, 0f)
@@ -256,15 +256,15 @@ fun buttonOutLeftSide(imageButton: ImageButton, context: Context, duration: Long
 
     fun removeImage (imageView: ImageView) {
         val scaleAnimation = ScaleAnimation(
-            1f, 1f, // X-axis scaling from 1 to 1 (no change)
-            1f, 0f, // Y-axis scaling from 1 to 0 (shrinking vertically)
-            Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point: X-axis center
-            Animation.RELATIVE_TO_SELF, 0.5f  // Pivot point: Y-axis center
+            1f, 1f,
+            1f, 0f,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
         )
-        scaleAnimation.duration = 500 // Adjust the duration as needed
+        scaleAnimation.duration = 500
 
         val moveUp = TranslateAnimation(0f, 0f, 0f, -imageView.height.toFloat())
-        moveUp.duration = 500 // Adjust the duration as needed
+        moveUp.duration = 500
         val animationSet = AnimationSet(true)
         animationSet.addAnimation(scaleAnimation)
         animationSet.addAnimation(moveUp)

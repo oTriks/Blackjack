@@ -24,7 +24,6 @@ class Deck(
 ) {
     var cards: MutableList<Card.PlayingCard> = mutableListOf()
     val handler = Handler(Looper.getMainLooper())
-    val cardImageViews = mutableListOf<ImageView>()
 
     init {
         for (suit in Card.Suit.values()) {
@@ -83,9 +82,8 @@ class Deck(
     }
 
     fun dealHand(playerHand: Hand, dealerHand: Hand) {
-//        var card = cards.random()
-        var card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
-
+//        var card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.ACE)
+        var card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
         performDealingAnimation(
@@ -100,8 +98,8 @@ class Deck(
         firstCardImageView.visibility = View.VISIBLE
 
 
-//        card = cards.random()
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.TWO)
+//        card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.ACE)
+        card = cards.random()
         dealerHand.cards.add(card)
         cards.remove(card)
         handler.postDelayed({
@@ -117,7 +115,7 @@ class Deck(
             thirdCardImageView.visibility = View.VISIBLE
         }, secondCard)
 
-            card = Card.PlayingCard(Card.Suit.SPADES, Card.Rank.FIVE)
+//        card = Card.PlayingCard(Card.Suit.DIAMONDS, Card.Rank.TEN)
 //        card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
@@ -134,8 +132,8 @@ class Deck(
             fifthCardImageView.visibility = View.VISIBLE
         }, thirdCard)
 
-            card = Card.PlayingCard(Card.Suit.HEARTS, Card.Rank.TWO)
-//        card = cards.random()
+//        card = Card.PlayingCard(Card.Suit.CLUBS, Card.Rank.KING)
+        card = cards.random()
         dealerHand.hiddenCard = card
         cards.remove(card)
         handler.postDelayed({
