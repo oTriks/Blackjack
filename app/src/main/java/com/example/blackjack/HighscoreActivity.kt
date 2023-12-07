@@ -1,8 +1,10 @@
 package com.example.blackjack
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 
 class HighscoreActivity : AppCompatActivity() {
@@ -22,7 +24,7 @@ class HighscoreActivity : AppCompatActivity() {
         val bust = sharedPreferences.getInt("bust", 0)
         val dealerBust = sharedPreferences.getInt("dealerBust", 0)
         val compare = sharedPreferences.getInt("compare", 0)
-
+        val homeButton = findViewById<ImageView>(R.id.homeButtonImageView)
 
         findViewById<TextView>(R.id.playerMoneyText).text = "Player Money: $playerMoney"
         findViewById<TextView>(R.id.winsText).text = "Wins: $wins"
@@ -32,8 +34,11 @@ class HighscoreActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.compareScoreText).text = "Compared score: $compare"
         findViewById<TextView>(R.id.playerBustText).text = "Player went bust: $bust"
         findViewById<TextView>(R.id.dealerBustText).text = "Dealer went bust: $dealerBust"
-        findViewById<TextView>(R.id.playedGamesText).text = "Games Played: $gamesPlayed"
-
+        findViewById<TextView>(R.id.playedGamesText).text = "Hands Played: $gamesPlayed"
+        homeButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

@@ -274,6 +274,7 @@ class GameFragment : Fragment() {
         fun setupMarker(
             marker: ImageView,
             madeBetMarker: ImageView,
+
             value: Int,
             totalBetText: TextView,
             dealButton: ImageButton,
@@ -690,26 +691,26 @@ class GameFragment : Fragment() {
             when {
                 pointsWithAceAsEleven > 21 && pointsWithAceAsOne > 21 -> {
                     dealerPointsText.text = pointsWithAceAsOne.toString()
-                                determineWinner(playerHand, dealerHand)
+                    determineWinner(playerHand, dealerHand)
                     dealerBust++
                 }
 
                 pointsWithAceAsEleven > 21 -> {
                     dealerPointsText.text = pointsWithAceAsOne.toString()
-                                determineWinner(playerHand, dealerHand)
+                    determineWinner(playerHand, dealerHand)
                 }
 
                 pointsWithAceAsEleven in 17..21 -> {
                     dealerPointsText.text = pointsWithAceAsEleven.toString()
-                                determineWinner(playerHand, dealerHand)
+                    determineWinner(playerHand, dealerHand)
                     compare++
                 }
+
                 pointsWithAceAsEleven < 17 && pointsWithAceAsOne < 17 -> {
                     drawCardDealer()
                     dealerHand.updatePointsText(pointsDealerText, false)
-                    Log.d("blackjack", "drawCardWithDelay")
                     handler.postDelayed({
-                    checKDealerPoints(dealerHand, pointsDealerText)
+                        checKDealerPoints(dealerHand, pointsDealerText)
                     }, lowHand)
                 }
             }
@@ -878,6 +879,7 @@ class GameFragment : Fragment() {
                         bannerManager.fadeOutBanner(bannerBust)
                         moveCardsToPile(bannerBust)
                         losses++
+                        gameEnd()
                     }
                     cardDealingOutCardsToPlayerTense.visibility = View.INVISIBLE
                     handler.postDelayed({
@@ -932,7 +934,8 @@ class GameFragment : Fragment() {
         }
 
         fun cashOut() {
-            val sharedPreferences = requireActivity().getSharedPreferences("myGamePreferences", Context.MODE_PRIVATE)
+            val sharedPreferences =
+                requireActivity().getSharedPreferences("myGamePreferences", Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
             editor.putInt("playerMoney", playerMoney)
             editor.putInt("wins", wins)
@@ -1076,6 +1079,7 @@ class GameFragment : Fragment() {
                     if (dealerHand.isBlackjack()) {
                         animateMarkersToWinner(winnerIsDealer = true)
                         handler.postDelayed({
+                            losses++
                             playerMoney += totalBet
                             playerMoneyText.text = playerMoney.toString()
                         }, updateMoney)
@@ -1110,38 +1114,48 @@ class GameFragment : Fragment() {
 
 
         repeatBet.setOnClickListener {
-            animations.buttonOutRightSide(repeatBet, requireContext(), 1000L)
-            deal.isEnabled = false
-            repeatBet.isEnabled = false
-            for (marker in markerList) {
-                marker.isEnabled = false
+            if (playerMoney >= totalBet) {
+                playerMoney -= totalBet
+                playerMoneyText.text = playerMoney.toString()
+
+                totalBetCost = 0
+                animations.buttonOutRightSide(repeatBet, requireContext(), 1000L)
+                deal.isEnabled = false
+                repeatBet.isEnabled = false
+                for (marker in markerList) {
+                    marker.isEnabled = false
+                }
+
+
+                for (betInfo in selectedBets) {
+                    betInfo.madeBetMarker.visibility = View.VISIBLE
+                    betInfo.count++
+                    totalBetCost += betInfo.count * betInfo.value
+
+                    animations.moveObject(
+                        betInfo.madeBetMarker,
+                        betInfo.marker.x,
+                        betInfo.marker.y,
+                        betInfo.madeBetMarker.x,
+                        betInfo.madeBetMarker.y,
+                        500L,
+                        0L
+                    )
+
+                }
+                totalBet = lastBetMarkersValue.sum()
+                totalBetText.text = totalBet.toString()
+                animations.fadeInTextView(totalBetText)
+                handler.postDelayed({
+                    startGame()
+                }, gameStart)
+            } else {
+                bannerNoFunds.bringToFront()
+                animations.fadeInAndMoveUpImageView(bannerNoFunds)
+                handler.postDelayed({
+                    animations.fadeOutImageView(bannerNoFunds)
+                }, noMoney)
             }
-            resetPositionsCards()
-            resetPositionsMarkers()
-
-            var totalBetCost = 0
-
-            for (betInfo in selectedBets) {
-                betInfo.madeBetMarker.visibility = View.VISIBLE
-                betInfo.count++
-                totalBetCost += betInfo.count * betInfo.value
-
-                animations.moveObject(
-                    betInfo.madeBetMarker,
-                    betInfo.marker.x,
-                    betInfo.marker.y,
-                    betInfo.madeBetMarker.x,
-                    betInfo.madeBetMarker.y,
-                    500L,
-                    0L
-                )
-            }
-            totalBet = lastBetMarkersValue.sum()
-            totalBetText.text = totalBet.toString()
-            animations.fadeInTextView(totalBetText)
-            handler.postDelayed({
-                startGame()
-            }, gameStart)
         }
 
         return view

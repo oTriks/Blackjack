@@ -147,7 +147,7 @@
          android:focusable="false"
          android:scaleX="0.35"
          android:scaleY="0.35"
-         android:src="@drawable/sign_stand"
+         android:src="@drawable/sign_stand_white"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 
@@ -161,7 +161,7 @@
          android:focusable="false"
          android:scaleX="0.35"
          android:scaleY="0.35"
-         android:src="@drawable/sign_hit"
+         android:src="@drawable/sign_hit_white"
          app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
          app:layout_constraintStart_toStartOf="@+id/backgroundImageView" />
 

@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.619"
-        app:srcCompat="@drawable/sign_play" />
+        app:srcCompat="@drawable/sign_play_white" />
 
     <ImageButton
         android:id="@+id/highscoreImageButton"

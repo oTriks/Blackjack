@@ -9,7 +9,6 @@ class DelaysUtil {
         val revealCardWhenFlip = 250L
         val revealCard = 3000L
         val shakeCard = 1200L
-        val getWinner = 1000L
         val blackjackPlayerBanner = 1800L
         val splitActions = 700L
         val removeBannersBlackjack = 2000L
@@ -22,7 +21,6 @@ class DelaysUtil {
         val revealBlackjack = 3700L
         val removeBlackjackBanner = 4700L
         val drawNewCard = 4000L
-        val doubleDownButton = 1200L
         val flipDealerCard = 500L
         val playerBust = 1000L
         val cashOutMoney = 2000L
