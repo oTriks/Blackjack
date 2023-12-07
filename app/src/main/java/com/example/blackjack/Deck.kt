@@ -116,7 +116,7 @@ class Deck(
         }, secondCard)
 
 //        card = Card.PlayingCard(Card.Suit.DIAMONDS, Card.Rank.TEN)
-//        card = cards.random()
+        card = cards.random()
         playerHand.cards.add(card)
         cards.remove(card)
         handler.postDelayed({
